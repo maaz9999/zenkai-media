@@ -25,7 +25,7 @@ Thumbs.db
 .env*.local
 
 # Root-level Assets folder (duplicate of public/Assets — not served by Next.js)
-Assets/
+/Assets/
 
 # Large uncompressed video files (>50MB) — keep only compressed versions in public/Assets/REELS/
 public/Assets/REELS/Danyal Mirza(2).mp4
