@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { MediaAsset } from "../assetsData";
+import { MediaAsset, getDisplayTitle } from "../assetsData";
 
 interface MediaModalProps {
   asset: MediaAsset | null;
@@ -51,7 +51,7 @@ export function MediaModal({ asset, onClose, onPrev, onNext, hasPrev, hasNext }:
             <div className="modal-header">
               <div className="modal-title-group">
                 <span className="modal-badge">{asset.type}</span>
-                <h3>{asset.title}</h3>
+                <h3>{getDisplayTitle(asset)}</h3>
               </div>
               <button className="modal-close" onClick={onClose} aria-label="Close modal">
                 ✕
@@ -76,7 +76,7 @@ export function MediaModal({ asset, onClose, onPrev, onNext, hasPrev, hasNext }:
               ) : (
                 <img
                   src={asset.src}
-                  alt={asset.title}
+                  alt={getDisplayTitle(asset)}
                   className="modal-media-content"
                 />
               )}
@@ -89,7 +89,7 @@ export function MediaModal({ asset, onClose, onPrev, onNext, hasPrev, hasNext }:
             </div>
 
             <div className="modal-footer">
-              <span className="modal-file-info">File: {asset.file}</span>
+              <span className="modal-file-info">HIGH QUALITY • {asset.type.toUpperCase()}</span>
               {asset.url && (
                 <a
                   href={asset.url}

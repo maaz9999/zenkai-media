@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Arrow, PageFrame, PageHero, AutoplayVideo } from "../components/PageShell";
-import { assetItems, MediaAsset } from "../assetsData";
+import { assetItems, getDisplayTitle, MediaAsset } from "../assetsData";
 import { MediaModal } from "../components/MediaModal";
 
 const BATCH_SIZE = 18;
@@ -164,7 +164,7 @@ export default function WorkPage() {
 
                 <div className="project-overlay">
                   <span className="type-tag">{item.type}</span>
-                  <h3>{item.title}</h3>
+                  <h3>{getDisplayTitle(item)}</h3>
                   <i>
                     {item.isVideo ? "▶" : <Arrow />}
                   </i>

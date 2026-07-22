@@ -10,7 +10,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { products, services } from "./content";
-import { assetItems, MediaAsset } from "./assetsData";
+import { assetItems, getDisplayTitle, MediaAsset } from "./assetsData";
 import { MediaModal } from "./components/MediaModal";
 import { CustomDropdown } from "./components/CustomDropdown";
 import { SiteFooter, AutoplayVideo } from "./components/PageShell";
@@ -310,7 +310,7 @@ export default function Home() {
                   )}
                   <div className="project-overlay">
                     <span>{item.type}</span>
-                    <h3>{item.title}</h3>
+                    <h3>{getDisplayTitle(item)}</h3>
                     <i>{item.isVideo ? "▶" : <Arrow />}</i>
                   </div>
                 </motion.article>

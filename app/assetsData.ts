@@ -10,6 +10,26 @@ export interface MediaAsset {
   url?: string;
 }
 
+export function getDisplayTitle(item: { title?: string; type?: string }): string {
+  if (!item || !item.title) return "Zenkai Creative Showcase";
+  const title = item.title;
+  if (/^(Visual|IMG|202\d|\d{4})/i.test(title)) {
+    switch (item.type) {
+      case "Posters":
+        return "Esports & Gaming Poster Showcase";
+      case "Thumbnails":
+        return "High-CTR YouTube Cover Design";
+      case "2D Design":
+        return "Brand Apparel & Merch Design";
+      case "Reels":
+        return "High-Retention Video Edit";
+      default:
+        return "Zenkai Creative Asset";
+    }
+  }
+  return title;
+}
+
 export const assetItems: MediaAsset[] = [
   {
     "id": "reel-v2",
@@ -76,7 +96,7 @@ export const assetItems: MediaAsset[] = [
   },
   {
     "id": "posters-1",
-    "title": "Visual 090803",
+    "title": "Esports Championship Poster",
     "type": "Posters",
     "folder": "POSTERS",
     "file": "20250104_090803.jpg",
@@ -86,7 +106,7 @@ export const assetItems: MediaAsset[] = [
   },
   {
     "id": "posters-2",
-    "title": "Visual 090832",
+    "title": "Pro Gaming Showcase Poster",
     "type": "Posters",
     "folder": "POSTERS",
     "file": "20250104_090832.jpg",
@@ -96,7 +116,7 @@ export const assetItems: MediaAsset[] = [
   },
   {
     "id": "posters-3",
-    "title": "Visual 090850",
+    "title": "Global Tournament Poster",
     "type": "Posters",
     "folder": "POSTERS",
     "file": "20250104_090850.jpg",
@@ -106,7 +126,7 @@ export const assetItems: MediaAsset[] = [
   },
   {
     "id": "posters-4",
-    "title": "Visual 090915",
+    "title": "Esports World Cup Poster",
     "type": "Posters",
     "folder": "POSTERS",
     "file": "20250104_090915.jpg",
@@ -116,7 +136,7 @@ export const assetItems: MediaAsset[] = [
   },
   {
     "id": "posters-5",
-    "title": "Visual 090933",
+    "title": "Championship Finalist Graphic",
     "type": "Posters",
     "folder": "POSTERS",
     "file": "20250104_090933.jpg",
@@ -126,7 +146,7 @@ export const assetItems: MediaAsset[] = [
   },
   {
     "id": "posters-6",
-    "title": "Arslan Ash Tournament",
+    "title": "Arslan Ash Tournament Poster",
     "type": "Posters",
     "folder": "POSTERS",
     "file": "Arslan ash tournament.jpg",
@@ -136,7 +156,7 @@ export const assetItems: MediaAsset[] = [
   },
   {
     "id": "posters-7",
-    "title": "IMG 6968",
+    "title": "TLPH Gaming Roster Poster",
     "type": "Posters",
     "folder": "POSTERS",
     "file": "IMG_6968.JPG",
@@ -146,7 +166,7 @@ export const assetItems: MediaAsset[] = [
   },
   {
     "id": "posters-8",
-    "title": "IMG 6969",
+    "title": "Esports Spotlight Graphic",
     "type": "Posters",
     "folder": "POSTERS",
     "file": "IMG_6969.JPG",
@@ -156,7 +176,7 @@ export const assetItems: MediaAsset[] = [
   },
   {
     "id": "posters-9",
-    "title": "IMG 6970",
+    "title": "Championship Key Visual Poster",
     "type": "Posters",
     "folder": "POSTERS",
     "file": "IMG_6970.JPG",
@@ -166,7 +186,7 @@ export const assetItems: MediaAsset[] = [
   },
   {
     "id": "posters-10",
-    "title": "IMG 6971",
+    "title": "Pro Fighter Showcase Poster",
     "type": "Posters",
     "folder": "POSTERS",
     "file": "IMG_6971.JPG",
@@ -176,7 +196,7 @@ export const assetItems: MediaAsset[] = [
   },
   {
     "id": "posters-11",
-    "title": "Jonn",
+    "title": "Jonn Character Poster",
     "type": "Posters",
     "folder": "POSTERS",
     "file": "jonn.jpg",
