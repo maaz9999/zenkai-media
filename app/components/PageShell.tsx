@@ -37,7 +37,7 @@ export function SiteNav({ active }: { active?: string }) {
 
   return (
     <>
-      <nav className={`nav shell ${menuOpen ? "menu-active" : ""}`} aria-label="Main navigation">
+      <nav className="nav shell" aria-label="Main navigation">
         <Logo />
         <div className="desktop-nav route-nav">
           {navItems.map(([label, href]) => (
@@ -50,55 +50,37 @@ export function SiteNav({ active }: { active?: string }) {
           Start a project <Arrow />
         </a>
         <button
-          className={`menu-button ${menuOpen ? "open" : ""}`}
+          className="menu-button"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-label="Toggle menu"
           aria-expanded={menuOpen}
         >
-          <span className="bar bar-1" />
-          <span className="bar bar-2" />
+          <span />
+          <span />
         </button>
       </nav>
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             className="mobile-menu"
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ clipPath: "inset(0 0 100% 0)" }}
+            animate={{ clipPath: "inset(0 0 0% 0)" }}
+            exit={{ clipPath: "inset(0 0 100% 0)" }}
+            transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
           >
-            <div className="mobile-menu-header">
-              <span className="mobile-menu-label">MENU NAVIGATION</span>
-              <button
-                className="mobile-close-btn"
+            {navItems.map(([label, href], index) => (
+              <motion.a
+                key={label}
+                href={href}
+                className={active === label ? "active" : ""}
                 onClick={() => setMenuOpen(false)}
-                aria-label="Close navigation"
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.06 + 0.12 }}
               >
-                ✕ CLOSE
-              </button>
-            </div>
-            <div className="mobile-menu-links">
-              {navItems.map(([label, href], index) => (
-                <motion.a
-                  key={label}
-                  href={href}
-                  className={active === label ? "active" : ""}
-                  onClick={() => setMenuOpen(false)}
-                  initial={{ opacity: 0, x: -16 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 + 0.06 }}
-                >
-                  <span>{label}</span>
-                  <Arrow />
-                </motion.a>
-              ))}
-            </div>
-            <div className="mobile-menu-footer">
-              <a href="/contact" className="mobile-cta-btn" onClick={() => setMenuOpen(false)}>
-                START A PROJECT ↗
-              </a>
-            </div>
+                {label} <Arrow />
+              </motion.a>
+            ))}
           </motion.div>
         )}
       </AnimatePresence>
