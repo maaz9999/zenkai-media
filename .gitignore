@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build & Cache directories
+.vinext/
+.wrangler/
+dist/
+build/
+.next/
+out/
+
+# Logs
+*.log
+dev-server.stderr.log
+dev-server.stdout.log
+
+# System & OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env*.local
+
+# Root-level Assets folder (duplicate of public/Assets — not served by Next.js)
+Assets/
+
+# Large uncompressed video files (>50MB) — keep only compressed versions in public/Assets/REELS/
+public/Assets/REELS/Danyal Mirza(2).mp4
+public/Assets/REELS/Danyal_Mirza_2.mp4
+public/Assets/REELS/inter ferzeen reel02.mp4
+public/Assets/REELS/jon usama visa final01.mp4
+public/Assets/REELS/teach me jun1.mp4
+node_modules
