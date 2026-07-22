@@ -121,8 +121,8 @@ function ServiceCard({ service }: { service: (typeof services)[number] }) {
       transition={{ duration: 0.25 }}
     >
       <div className="service-top"><span>ZENKAI / {service.number}</span><span>{service.tag}</span><i>AVAILABLE</i></div>
-      <ServiceVisual number={service.number} title={service.title} />
       <div className="service-copy"><h3>{service.title}</h3><p>{service.description}</p></div>
+      <ServiceVisual number={service.number} title={service.title} />
       <div className="service-footer">
         <ul>{service.deliverables.map((item) => <li key={item}>{item}</li>)}</ul>
         <a href="/contact" aria-label={`Start a ${service.title} project`}><span>Discuss service</span><Arrow /></a>
