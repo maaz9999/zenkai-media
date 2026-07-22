@@ -30,23 +30,75 @@ export function SiteNav({ active }: { active?: string }) {
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
 
   return (
     <>
-      <nav className="nav shell" aria-label="Main navigation">
+      <nav className={`nav shell ${menuOpen ? "menu-active" : ""}`} aria-label="Main navigation">
         <Logo />
         <div className="desktop-nav route-nav">
-          {navItems.map(([label, href]) => <a className={active === label ? "active" : ""} key={label} href={href}>{label}</a>)}
+          {navItems.map(([label, href]) => (
+            <a className={active === label ? "active" : ""} key={label} href={href}>
+              {label}
+            </a>
+          ))}
         </div>
-        <a className="nav-cta" href="/contact">Start a project <Arrow /></a>
-        <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}><span /><span /></button>
+        <a className="nav-cta" href="/contact">
+          Start a project <Arrow />
+        </a>
+        <button
+          className={`menu-button ${menuOpen ? "open" : ""}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+        >
+          <span className="bar bar-1" />
+          <span className="bar bar-2" />
+        </button>
       </nav>
       <AnimatePresence>
         {menuOpen && (
-          <motion.div className="mobile-menu" initial={{ clipPath: "inset(0 0 100% 0)" }} animate={{ clipPath: "inset(0 0 0% 0)" }} exit={{ clipPath: "inset(0 0 100% 0)" }} transition={{ duration: .45, ease: [0.76, 0, 0.24, 1] }}>
-            {navItems.map(([label, href], index) => <motion.a key={label} href={href} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * .06 + .12 }}>{label} <Arrow /></motion.a>)}
+          <motion.div
+            className="mobile-menu"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="mobile-menu-header">
+              <span className="mobile-menu-label">MENU NAVIGATION</span>
+              <button
+                className="mobile-close-btn"
+                onClick={() => setMenuOpen(false)}
+                aria-label="Close navigation"
+              >
+                ✕ CLOSE
+              </button>
+            </div>
+            <div className="mobile-menu-links">
+              {navItems.map(([label, href], index) => (
+                <motion.a
+                  key={label}
+                  href={href}
+                  className={active === label ? "active" : ""}
+                  onClick={() => setMenuOpen(false)}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 + 0.06 }}
+                >
+                  <span>{label}</span>
+                  <Arrow />
+                </motion.a>
+              ))}
+            </div>
+            <div className="mobile-menu-footer">
+              <a href="/contact" className="mobile-cta-btn" onClick={() => setMenuOpen(false)}>
+                START A PROJECT ↗
+              </a>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -148,44 +200,49 @@ export function PageHero({
       <LightRays
         raysOrigin="top-center"
         raysColor="#ffffff"
-        raysSpeed={1}
-        lightSpread={0.7}
-        rayLength={2.5}
-        followMouse={true}
-        mouseInfluence={0.1}
-        noiseAmount={0}
-        distortion={0}
-        className="custom-rays"
-        pulsating={false}
-        fadeDistance={1}
-        saturation={1}
+        raysSpeed={0.5}
       />
-      {bgImageSrc && !videoSrc && (
-        <div className="hero-bg-banner-container" aria-hidden="true">
-          <img src={bgImageSrc} alt="" className="hero-bg-banner-image" />
+      {bgImageSrc && (
+        <div className="hero-bg-banner-container">
+          <img src={bgImageSrc} alt="" className="hero-bg-banner-image" loading="eager" />
           <div className="hero-bg-banner-overlay" />
         </div>
       )}
       {videoSrc && (
-        <div className="hero-bg-video-container" aria-hidden="true">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster={posterSrc}
-            className={`hero-bg-video-element ${mobileVideoSrc ? "desktop-only-video" : ""}`}
-            src={videoSrc}
-          />
-          {mobileVideoSrc && (
+        <div className="hero-bg-video-container">
+          {mobileVideoSrc ? (
+            <>
+              <video
+                src={videoSrc}
+                poster={posterSrc}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                className="hero-bg-video-element desktop-only-video"
+              />
+              <video
+                src={mobileVideoSrc}
+                poster={posterSrc}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                className="hero-bg-video-element mobile-only-video"
+              />
+            </>
+          ) : (
             <video
+              src={videoSrc}
+              poster={posterSrc}
               autoPlay
               muted
               loop
               playsInline
-              poster={posterSrc}
-              className="hero-bg-video-element mobile-only-video"
-              src={mobileVideoSrc}
+              preload="auto"
+              className="hero-bg-video-element"
             />
           )}
           <div className="hero-bg-video-overlay" />
@@ -266,7 +323,7 @@ export function AutoplayVideo({
   const [isLoaded, setIsLoaded] = useState(false);
   const [srcSet, setSrcSet] = useState(eager);
 
-  // Step 1: Only set the src once the wrapper enters the viewport
+  // Step 1: Preload video early (600px lookahead margin)
   useEffect(() => {
     if (eager) {
       setSrcSet(true);
@@ -281,13 +338,13 @@ export function AutoplayVideo({
           srcObserver.disconnect();
         }
       },
-      { rootMargin: "200px" } // start loading 200px before it scrolls into view
+      { rootMargin: "600px" }
     );
     srcObserver.observe(wrap);
     return () => srcObserver.disconnect();
   }, [eager, src]);
 
-  // Step 2: Play/pause based on visibility once src is set
+  // Step 2: Play/pause based on visibility
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !srcSet) return;
