@@ -6,8 +6,8 @@ import { useEffect, useState, useRef } from "react";
 import LightRays from "./LightRays";
 
 export const navItems = [
-  ["Work", "/work"],
-  ["Services", "/services"],
+  ["Home", "/"],
+  ["Portfolio", "/work"],
   ["About", "/about"],
   ["Contact", "/contact"],
 ] as const;
@@ -105,21 +105,21 @@ export function SiteFooter() {
         <div className="footer-col">
           <h4>Navigation</h4>
           <ul>
-            <li><a href="/work">Work Archive</a></li>
-            <li><a href="/services">Capabilities</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/work">Portfolio Archive</a></li>
             <li><a href="/about">About Studio</a></li>
             <li><a href="/contact">Contact Us</a></li>
           </ul>
         </div>
 
         <div className="footer-col">
-          <h4>Services</h4>
+          <h4>Disciplines</h4>
           <ul>
-            <li><a href="/services">Web Experiences</a></li>
-            <li><a href="/services">Video & Reels Editing</a></li>
-            <li><a href="/services">Thumbnail Suite</a></li>
-            <li><a href="/services">Growth Creative</a></li>
-            <li><a href="/services">Custom Software</a></li>
+            <li><a href="/work?tab=Web">Web Experiences</a></li>
+            <li><a href="/work?tab=Reels">Video & Reels Editing</a></li>
+            <li><a href="/work?tab=Thumbnails">Thumbnail Suite</a></li>
+            <li><a href="/work?tab=2D Design">2D Design & Merch</a></li>
+            <li><a href="/work?tab=Web">Custom Software</a></li>
           </ul>
         </div>
 
@@ -164,6 +164,11 @@ export function PageHero({
   bgImageSrc,
   showTopWidget = false,
   singleLine = false,
+  showActions = true,
+  primaryCtaLabel = "Explore Work",
+  primaryCtaHref = "/work",
+  secondaryCtaLabel = "Start a Project",
+  secondaryCtaHref = "/contact",
 }: {
   eyebrow: string;
   title: string;
@@ -176,6 +181,11 @@ export function PageHero({
   bgImageSrc?: string;
   showTopWidget?: boolean;
   singleLine?: boolean;
+  showActions?: boolean;
+  primaryCtaLabel?: string;
+  primaryCtaHref?: string;
+  secondaryCtaLabel?: string;
+  secondaryCtaHref?: string;
 }) {
   return (
     <section className={`page-hero ${videoSrc ? "has-bg-video" : bgImageSrc ? "has-bg-banner" : ""} shell`}>
@@ -277,6 +287,16 @@ export function PageHero({
         <div className="hero-copy-bottom">
           <span>{index} / 05</span>
           <p>{copy}</p>
+          {showActions && (
+            <div className="brandif-hero-actions" style={{ marginTop: "18px" }}>
+              <a href={primaryCtaHref} className="brandif-btn-primary">
+                {primaryCtaLabel} <Arrow />
+              </a>
+              <a href={secondaryCtaHref} className="brandif-btn-secondary">
+                {secondaryCtaLabel} <Arrow />
+              </a>
+            </div>
+          )}
         </div>
       </motion.div>
     </section>

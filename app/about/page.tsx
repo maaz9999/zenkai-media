@@ -19,7 +19,10 @@ export default function AboutPage() {
         italic="bold moves."
         index="04"
         copy="Zenkai Media is an independent creative technology studio for brands and people who care how the work feels—and how well it performs."
-        bgImageSrc="/SERVICES.png"
+        primaryCtaLabel="Explore Work Archive"
+        primaryCtaHref="/work"
+        secondaryCtaLabel="Discuss a Project"
+        secondaryCtaHref="/contact"
       />
       <section className="about-story shell">
         <motion.div className="story-media" initial={{ opacity: 0, rotate: -4 }} whileInView={{ opacity: 1, rotate: 0 }} viewport={{ once: true }}><img src="/media/Arslan_ash_tournament.jpg" alt="Tournament poster created by Zenkai Media" /><div>PK<br />→<br />WORLD</div></motion.div>

@@ -17,8 +17,8 @@ import { SiteFooter, AutoplayVideo } from "./components/PageShell";
 import LightRays from "./components/LightRays";
 
 const navItems = [
-  ["Work", "/work"],
-  ["Services", "/services"],
+  ["Home", "/"],
+  ["Portfolio", "/work"],
   ["About", "/about"],
   ["Contact", "/contact"],
 ];
@@ -41,57 +41,6 @@ function Arrow() {
   return <span aria-hidden="true">↗</span>;
 }
 
-const serviceMedia: Record<string, { src: string; isVideo?: boolean; label: string }> = {
-  "01": { src: "/Assets/Thumbnails/solentrix.png", label: "WEB SYSTEM PREVIEW" },
-  "02": { src: "/Assets/REELS/v2.mp4", isVideo: true, label: "SHORT-FORM CONTENT" },
-  "03": { src: "/Assets/MARK47.png", isVideo: false, label: "MARK47 - PUBG MOBILE SOFTWARE" },
-  "04": { src: "/Assets/POSTERS/jonn.jpg", label: "BRAND IDENTITY" },
-  "05": { src: "/Assets/REELS/growth_creative.mp4", isVideo: true, label: "GROWTH CREATIVE" },
-  "06": { src: "/Assets/Thumbnails/2025-01-04_09-01-54.jpg", label: "HIGH-CTR YOUTUBE THUMBNAIL" },
-};
-
-function ServiceVisual({ number, title }: { number: string; title: string }) {
-  const media = serviceMedia[number] || { src: "/Assets/POSTERS/20250104_090832.jpg", label: "MEDIA PREVIEW" };
-  return (
-    <div className="service-visual" data-visual={number} aria-hidden="true">
-      <div className="visual-meta"><span>LIVE SYSTEM</span><span>PR/{number}</span></div>
-      <div className="visual-frame real-media-frame">
-        {media.isVideo ? (
-          <AutoplayVideo src={media.src} className="service-real-media" />
-        ) : (
-          <img src={media.src} alt={title} className="service-real-media" loading="lazy" />
-        )}
-        <div className="media-overlay-badge">{media.label}</div>
-      </div>
-      <span className="visual-name">{title}</span>
-    </div>
-  );
-}
-
-const productMedia = [
-  { src: "/Assets/POSTERS/20250104_090832.jpg", isVideo: false, tag: "SYSTEM SHOWCASE" },
-  { src: "/Assets/REELS/v2.mp4", isVideo: true, tag: "CONTENT ENGINE" },
-  { src: "/Assets/MARK47.png", isVideo: false, tag: "MARK47 PUBG MOBILE" },
-];
-
-function HomeProductVisual({ index }: { index: number }) {
-  const media = productMedia[index] || productMedia[0];
-  return (
-    <div className="home-product-art" data-product={index + 1} aria-hidden="true">
-      <div className="product-art-bar"><span>ZENKAI / PREVIEW</span><i /><i /><i /></div>
-      <div className="product-art-screen real-product-screen">
-        {media.isVideo ? (
-          <AutoplayVideo src={media.src} className="product-real-media" />
-        ) : (
-          <img src={media.src} alt="" className="product-real-media" loading="lazy" />
-        )}
-        <span className="product-media-tag">{media.tag}</span>
-      </div>
-      <div className="product-art-status"><span>BUILD READY</span><span>0{index + 1} / 03</span></div>
-    </div>
-  );
-}
-
 function ServiceCard({ service }: { service: (typeof services)[number] }) {
   const reduceMotion = useReducedMotion();
   const rx = useMotionValue(0);
@@ -112,20 +61,33 @@ function ServiceCard({ service }: { service: (typeof services)[number] }) {
 
   return (
     <motion.article
-      className="service-card"
+      className="service-card plain-service-card"
       data-number={service.number}
       style={{ rotateX, rotateY, "--accent": service.color } as React.CSSProperties}
       onMouseMove={tilt}
       onMouseLeave={() => { rx.set(0); ry.set(0); }}
-      whileHover={{ y: -8 }}
+      whileHover={{ y: -6 }}
       transition={{ duration: 0.25 }}
     >
-      <div className="service-top"><span>ZENKAI / {service.number}</span><span>{service.tag}</span><i>AVAILABLE</i></div>
-      <div className="service-copy"><h3>{service.title}</h3><p>{service.description}</p></div>
-      <ServiceVisual number={service.number} title={service.title} />
+      <div className="service-top">
+        <span>ZENKAI / {service.number}</span>
+        <span>{service.tag}</span>
+        <i>AVAILABLE</i>
+      </div>
+      <div className="service-copy">
+        <h3>{service.title}</h3>
+        <p>{service.description}</p>
+      </div>
       <div className="service-footer">
-        <ul>{service.deliverables.map((item) => <li key={item}>{item}</li>)}</ul>
-        <a href="/contact" aria-label={`Start a ${service.title} project`}><span>Discuss service</span><Arrow /></a>
+        <ul>
+          {service.deliverables.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+        <a href="/contact" className="service-discuss-link" aria-label={`Start a ${service.title} project`}>
+          <span>Discuss service</span>
+          <Arrow />
+        </a>
       </div>
     </motion.article>
   );
@@ -205,7 +167,11 @@ export default function Home() {
       <nav className="nav shell" aria-label="Main navigation">
         <Logo />
         <div className="desktop-nav">
-          {navItems.map(([label, href]) => <a key={label} href={href}>{label}</a>)}
+          {navItems.map(([label, href]) => (
+            <a key={label} href={href} className={label === "Home" ? "active" : ""}>
+              {label}
+            </a>
+          ))}
         </div>
         <a className="nav-cta" href="/contact">Start a project <Arrow /></a>
         <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>
@@ -243,9 +209,16 @@ export default function Home() {
         <motion.div className="hero-copy" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.1 } } }}>
           <motion.div className="eyebrow" variants={reveal}><span /> Independent digital studio · PK / Worldwide</motion.div>
           <motion.h1 variants={reveal}>We turn<br /><span>ideas</span> into<br />impact.</motion.h1>
-          <motion.div className="hero-bottom" variants={reveal}>
-            <p>Creative media and digital products engineered to look impossible to ignore.</p>
-            <a className="circle-link" href="/work" aria-label="Explore selected work"><span>Explore work</span><Arrow /></a>
+          <motion.div className="hero-bottom" variants={reveal} style={{ flexDirection: "column", alignItems: "flex-start", gap: "24px" }}>
+            <p style={{ maxWidth: "480px", margin: 0 }}>Creative media and digital products engineered to look impossible to ignore.</p>
+            <div className="brandif-hero-actions" style={{ marginTop: 0 }}>
+              <a href="/work" className="brandif-btn-primary">
+                Explore Selected Work <Arrow />
+              </a>
+              <a href="/contact" className="brandif-btn-secondary">
+                Start a Project <Arrow />
+              </a>
+            </div>
           </motion.div>
         </motion.div>
 
@@ -310,7 +283,6 @@ export default function Home() {
                   )}
                   <div className="project-overlay">
                     <span>{item.type}</span>
-                    <h3>{getDisplayTitle(item)}</h3>
                     <i>{item.isVideo ? "▶" : <Arrow />}</i>
                   </div>
                 </motion.article>

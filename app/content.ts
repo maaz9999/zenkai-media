@@ -5,7 +5,7 @@ export const services = [
     tag: "DESIGN + DEVELOPMENT",
     description: "Distinctive websites that move fast, feel considered, and turn attention into action.",
     deliverables: ["Creative direction", "UI/UX systems", "Interactive development"],
-    color: "#ff6600",
+    color: "#00f0ff", // Electric Cyan
   },
   {
     number: "02",
@@ -13,7 +13,7 @@ export const services = [
     tag: "EDITING + CONTENT",
     description: "High-retention edits, thumbnails, and campaigns built for the speed of modern feeds.",
     deliverables: ["Long-form editing", "Reels & shorts", "Thumbnail design"],
-    color: "#ff7700",
+    color: "#b844ff", // Neon Violet / Purple
   },
   {
     number: "03",
@@ -21,7 +21,7 @@ export const services = [
     tag: "SYSTEMS + AUTOMATION",
     description: "Tailored tools and scalable software that remove friction from ambitious businesses.",
     deliverables: ["Internal platforms", "Workflow automation", "API integrations"],
-    color: "#ff5500",
+    color: "#00ff9d", // Emerald Mint Green
   },
   {
     number: "04",
@@ -29,7 +29,7 @@ export const services = [
     tag: "STRATEGY + DESIGN",
     description: "Flexible brand systems with a clear point of view, built to stay recognizable everywhere.",
     deliverables: ["Positioning", "Visual identity", "Brand guidelines"],
-    color: "#ff9900",
+    color: "#ff6600", // Signature Acid Orange
   },
   {
     number: "05",
@@ -37,7 +37,7 @@ export const services = [
     tag: "CAMPAIGNS + CONTENT",
     description: "Always-on creative systems that give brands more useful ideas and more consistent output.",
     deliverables: ["Campaign concepts", "Content systems", "Performance creative"],
-    color: "#ff6b00",
+    color: "#ff007f", // Electric Hot Pink
   },
   {
     number: "06",
@@ -45,7 +45,7 @@ export const services = [
     tag: "PACKAGING + GRAPHICS",
     description: "High-CTR YouTube and social media thumbnails designed to maximize click-through rate and visual authority.",
     deliverables: ["YouTube thumbnails", "High-CTR packaging", "Key visual graphics"],
-    color: "#ff8800",
+    color: "#ffb700", // Sunburst Gold
   },
 ];
 

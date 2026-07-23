@@ -321,13 +321,158 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* Brandif-inspired Interactive 4-Step Studio Process Section */}
+      <section className="studio-process-section shell">
+        <motion.div
+          className="section-heading"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={{
+            hidden: { opacity: 0, y: 30 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.65 } },
+          }}
+        >
+          <div>
+            <span className="kicker">STUDIO WORKFLOW</span>
+            <h2>
+              From concept.<br />
+              <em>To momentum.</em>
+            </h2>
+          </div>
+          <p>Four disciplined phases designed to eliminate friction and ship extraordinary work on time.</p>
+        </motion.div>
+
+        <div className="process-grid">
+          {[
+            {
+              step: "01",
+              phase: "STRATEGY & AUDIT",
+              title: "Uncovering the Advantage",
+              desc: "We analyze your audience, positioning gaps, and brand identity before crafting the core creative direction.",
+              deliverable: "Positioning Brief & Architecture",
+            },
+            {
+              step: "02",
+              phase: "PROTOTYPING",
+              title: "High-Fidelity Direction",
+              desc: "Developing responsive UI components, motion guidelines, video storyboards, and high-impact visual design.",
+              deliverable: "Interactive Prototypes & Tokens",
+            },
+            {
+              step: "03",
+              phase: "ENGINEERING",
+              title: "Production & Polish",
+              desc: "Building clean full-stack applications in Next.js, Framer Motion, and producing high-CTR media assets.",
+              deliverable: "Shipped Code & Media Assets",
+            },
+            {
+              step: "04",
+              phase: "LAUNCH & SCALE",
+              title: "Performance Engine",
+              desc: "Deploying high-speed infrastructure, measuring real-time telemetry, and optimizing for audience growth.",
+              deliverable: "Live System & Growth Metrics",
+            },
+          ].map((item, idx) => (
+            <motion.div
+              key={item.step}
+              className="process-card"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.08 }}
+            >
+              <div className="process-header">
+                <span className="process-step">{item.step}</span>
+                <span className="process-phase">{item.phase}</span>
+              </div>
+              <h3>{item.title}</h3>
+              <p>{item.desc}</p>
+              <div className="process-deliverable-pill">
+                <span>Output:</span> {item.deliverable}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Modern Comparison Matrix Table */}
+      <section className="comparison-section shell">
+        <motion.div
+          className="section-heading"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={{
+            hidden: { opacity: 0, y: 30 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.65 } },
+          }}
+        >
+          <div>
+            <span className="kicker">WHY ZENKAI MEDIA</span>
+            <h2>
+              Modern studio.<br />
+              <em>Zero overhead.</em>
+            </h2>
+          </div>
+          <p>How our integrated team compares to bloated traditional agency retainers.</p>
+        </motion.div>
+
+        <div className="comparison-table-wrapper">
+          <div className="comparison-table">
+            <div className="table-header">
+              <div className="col-feature">Capability</div>
+              <div className="col-zenkai">Zenkai Media</div>
+              <div className="col-traditional">Traditional Agency</div>
+            </div>
+            {[
+              {
+                feature: "Collaboration Level",
+                zenkai: "Direct senior team (1:1)",
+                traditional: "Middlemen & junior account handlers",
+              },
+              {
+                feature: "Disciplines Covered",
+                zenkai: "Web, Software, Video, 2D Design, Thumbnails",
+                traditional: "Siloed across 3–4 separate vendors",
+              },
+              {
+                feature: "Execution Speed",
+                zenkai: "Rapid weekly iterations & shipped builds",
+                traditional: "Months of bloated meetings & decks",
+              },
+              {
+                feature: "Technical Quality",
+                zenkai: "Next.js, Framer Motion, 4K Video Pipeline",
+                traditional: "Outsourced templates & slow plugins",
+              },
+              {
+                feature: "Focus & Outcome",
+                zenkai: "High CTR, conversion performance, & impact",
+                traditional: "Hourly billing & Scope bloat",
+              },
+            ].map((row, idx) => (
+              <div className="table-row" key={idx}>
+                <div className="col-feature">{row.feature}</div>
+                <div className="col-zenkai">
+                  <span className="check-icon">✓</span> {row.zenkai}
+                </div>
+                <div className="col-traditional">
+                  <span className="cross-icon">✕</span> {row.traditional}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="route-callout shell">
         <span className="kicker">READY WHEN YOU ARE</span>
         <h2>
           Bring the ambition.<br />
           <em>We’ll bring the range.</em>
         </h2>
-        <a href="/contact">
+        <a href="/contact" className="brandif-btn-primary">
           Work with Zenkai Media <Arrow />
         </a>
       </section>

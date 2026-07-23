@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Arrow, PageFrame, PageHero, AutoplayVideo } from "../components/PageShell";
+import { Arrow, PageFrame, AutoplayVideo } from "../components/PageShell";
 import { assetItems, getDisplayTitle, MediaAsset } from "../assetsData";
 import { MediaModal } from "../components/MediaModal";
 
@@ -60,17 +60,14 @@ export default function WorkPage() {
   const reelCount = assetItems.filter((a) => a.type === "Reels").length;
 
   return (
-    <PageFrame active="Work">
-      <PageHero
-        eyebrow="SELECTED WORK CATALOG"
-        title="Proof over"
-        italic="promises."
-        index="01"
-        copy="Explore our curated archive of custom software platforms, esports graphics, high-CTR thumbnails, and short-form video edits engineered for creators and ambitious brands."
-        bgImageSrc="/SERVICES.png"
-      />
-
+    <PageFrame active="Portfolio">
       <section className="route-section work-route shell">
+        <div className="work-header">
+          <span className="kicker">SELECTED WORK CATALOG</span>
+          <h1>Work <em>Archive.</em></h1>
+          <p>Explore our curated archive of custom software platforms, esports graphics, high-CTR thumbnails, and short-form video edits.</p>
+        </div>
+
         <div className="work-toolbar">
           <div className="filters" role="group" aria-label="Filter work folder">
             <button
@@ -164,7 +161,6 @@ export default function WorkPage() {
 
                 <div className="project-overlay">
                   <span className="type-tag">{item.type}</span>
-                  <h3>{getDisplayTitle(item)}</h3>
                   <i>
                     {item.isVideo ? "▶" : <Arrow />}
                   </i>

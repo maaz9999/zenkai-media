@@ -48,9 +48,12 @@ export default function ContactPage() {
         italic="big idea."
         index="05"
         copy="Share the challenge, the ambition, or even the rough thought. We’ll help shape the smartest next move."
-        bgImageSrc="/SERVICES.png"
+        primaryCtaLabel="Send a Brief"
+        primaryCtaHref="#contact-form"
+        secondaryCtaLabel="Direct WhatsApp"
+        secondaryCtaHref="https://wa.me/923137396135"
       />
-      <section className="contact-route shell">
+      <section id="contact-form" className="contact-route shell">
         <div className="contact-aside">
           <span className="kicker">PROJECT SIGNAL</span>
           <h2>What happens<br /><em>next?</em></h2>
