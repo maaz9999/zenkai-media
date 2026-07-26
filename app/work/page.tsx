@@ -3,13 +3,16 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Arrow, PageFrame, AutoplayVideo } from "../components/PageShell";
-import { assetItems, getDisplayTitle, MediaAsset } from "../assetsData";
+import { assetItems, MediaAsset } from "../assetsData";
 import { MediaModal } from "../components/MediaModal";
 
 const BATCH_SIZE = 18;
+const MEDIA_TYPES = ["2D Design", "Posters", "Thumbnails", "Reels"];
+const AI_SOFTWARE_TYPES = ["Web", "Software"];
 
 export default function WorkPage() {
-  const [activeTab, setActiveTab] = useState<string>("All");
+  const [activeCategory, setActiveCategory] = useState<"Media" | "AI & Software" | null>(null);
+  const [activeMediaFilter, setActiveMediaFilter] = useState<string>("All Media");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [visibleCount, setVisibleCount] = useState<number>(BATCH_SIZE);
   const [selectedAsset, setSelectedAsset] = useState<MediaAsset | null>(null);
@@ -18,24 +21,30 @@ export default function WorkPage() {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const tabParam = params.get("tab");
-      if (tabParam) {
-        setActiveTab(tabParam);
+      if (tabParam === "Web" || tabParam === "Software" || tabParam === "AI & Software") {
+        setActiveCategory("AI & Software");
+      } else if (tabParam && MEDIA_TYPES.some((type) => type.toLowerCase() === tabParam.toLowerCase())) {
+        setActiveCategory("Media");
+        setActiveMediaFilter(tabParam.toLowerCase() === "2d" ? "2D Design" : tabParam);
       }
     }
   }, []);
 
   const filteredAssets = assetItems.filter((item) => {
-    const matchesTab =
-      activeTab === "All" ||
-      item.type.toLowerCase() === activeTab.toLowerCase() ||
-      ((activeTab.toLowerCase().includes("2d")) && item.type.toLowerCase() === "2d design") ||
-      (activeTab === "Web" && (item.type.toLowerCase() === "web" || item.type.toLowerCase() === "software"));
+    const matchesCategory =
+      activeCategory === "Media"
+        ? MEDIA_TYPES.includes(item.type)
+        : AI_SOFTWARE_TYPES.includes(item.type);
+    const matchesMediaFilter =
+      activeCategory !== "Media" ||
+      activeMediaFilter === "All Media" ||
+      item.type === activeMediaFilter;
     const matchesSearch =
       searchQuery.trim() === "" ||
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.file.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (item.url && item.url.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesTab && matchesSearch;
+    return matchesCategory && matchesMediaFilter && matchesSearch;
   });
 
   const displayedAssets = filteredAssets.slice(0, visibleCount);
@@ -53,7 +62,8 @@ export default function WorkPage() {
     if (hasPrev) setSelectedAsset(filteredAssets[currentModalIndex - 1]);
   }
 
-  const webCount = assetItems.filter((a) => a.type === "Web" || a.type === "Software").length;
+  const mediaCount = assetItems.filter((a) => MEDIA_TYPES.includes(a.type)).length;
+  const aiSoftwareCount = assetItems.filter((a) => AI_SOFTWARE_TYPES.includes(a.type)).length;
   const posterCount = assetItems.filter((a) => a.type === "Posters").length;
   const design2DCount = assetItems.filter((a) => a.type === "2D Design").length;
   const thumbCount = assetItems.filter((a) => a.type === "Thumbnails").length;
@@ -65,53 +75,69 @@ export default function WorkPage() {
         <div className="work-header">
           <span className="kicker">SELECTED WORK CATALOG</span>
           <h1>Work <em>Archive.</em></h1>
-          <p>Explore our curated archive of custom software platforms, esports graphics, high-CTR thumbnails, and short-form video edits.</p>
+          <p>
+            {activeCategory
+              ? `Viewing our ${activeCategory} portfolio.`
+              : "What would you like to explore? Choose a portfolio below to enter."}
+          </p>
         </div>
 
+        {!activeCategory ? (
+          <motion.div
+            className="portfolio-gateway"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+          >
+            <div className="portfolio-gateway-heading">
+              <span>CHOOSE YOUR PATH</span>
+              <p>Two disciplines. One creative partner.</p>
+            </div>
+            <div className="portfolio-categories" role="group" aria-label="Choose portfolio category">
+              <button onClick={() => { setActiveCategory("Media"); setVisibleCount(BATCH_SIZE); }}>
+                <span>01</span>
+                <strong>Media</strong>
+                <p>2D design, posters, thumbnails and high-retention reels.</p>
+                <small>{mediaCount} projects</small>
+                <i><Arrow /></i>
+              </button>
+              <button onClick={() => { setActiveCategory("AI & Software"); setVisibleCount(BATCH_SIZE); }}>
+                <span>02</span>
+                <strong>AI &amp; Software</strong>
+                <p>AI platforms, websites and custom software products.</p>
+                <small>{aiSoftwareCount} projects</small>
+                <i><Arrow /></i>
+              </button>
+            </div>
+          </motion.div>
+        ) : (
+          <>
         <div className="work-toolbar">
-          <div className="filters" role="group" aria-label="Filter work folder">
+          <div className="portfolio-categories" role="group" aria-label="Choose portfolio category">
             <button
-              className={activeTab === "All" ? "active" : ""}
-              onClick={() => { setActiveTab("All"); setVisibleCount(BATCH_SIZE); }}
+              className={activeCategory === "Media" ? "active" : ""}
+              aria-pressed={activeCategory === "Media"}
+              onClick={() => { setActiveCategory("Media"); setVisibleCount(BATCH_SIZE); }}
             >
-              All Work ({assetItems.length})
+              <span>01</span>
+              Media
+              <small>{mediaCount} projects</small>
             </button>
             <button
-              className={activeTab === "Web" ? "active" : ""}
-              onClick={() => { setActiveTab("Web"); setVisibleCount(BATCH_SIZE); }}
+              className={activeCategory === "AI & Software" ? "active" : ""}
+              aria-pressed={activeCategory === "AI & Software"}
+              onClick={() => { setActiveCategory("AI & Software"); setVisibleCount(BATCH_SIZE); }}
             >
-              Web & Software ({webCount})
-            </button>
-            <button
-              className={activeTab === "2D Design" || activeTab === "2D" ? "active" : ""}
-              onClick={() => { setActiveTab("2D Design"); setVisibleCount(BATCH_SIZE); }}
-            >
-              2D Design & Merch ({design2DCount})
-            </button>
-            <button
-              className={activeTab === "Posters" ? "active" : ""}
-              onClick={() => { setActiveTab("Posters"); setVisibleCount(BATCH_SIZE); }}
-            >
-              Posters ({posterCount})
-            </button>
-            <button
-              className={activeTab === "Thumbnails" ? "active" : ""}
-              onClick={() => { setActiveTab("Thumbnails"); setVisibleCount(BATCH_SIZE); }}
-            >
-              Thumbnails ({thumbCount})
-            </button>
-            <button
-              className={activeTab === "Reels" ? "active" : ""}
-              onClick={() => { setActiveTab("Reels"); setVisibleCount(BATCH_SIZE); }}
-            >
-              Reels ({reelCount})
+              <span>02</span>
+              AI &amp; Software
+              <small>{aiSoftwareCount} projects</small>
             </button>
           </div>
 
           <div className="search-box">
             <input
               type="text"
-              placeholder="Search assets (e.g. Arslan, Tekken, Tournament)..."
+              placeholder={activeCategory === "Media" ? "Search media work..." : "Search AI & software work..."}
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setVisibleCount(BATCH_SIZE); }}
             />
@@ -123,8 +149,32 @@ export default function WorkPage() {
           </div>
         </div>
 
+        {activeCategory === "Media" && (
+          <div className="media-subfilters">
+            <span>Browse media by</span>
+            <div className="filters" role="group" aria-label="Filter media work">
+              {[
+                ["All Media", mediaCount],
+                ["2D Design", design2DCount],
+                ["Posters", posterCount],
+                ["Thumbnails", thumbCount],
+                ["Reels", reelCount],
+              ].map(([label, count]) => (
+                <button
+                  key={label}
+                  className={activeMediaFilter === label ? "active" : ""}
+                  aria-pressed={activeMediaFilter === label}
+                  onClick={() => { setActiveMediaFilter(String(label)); setVisibleCount(BATCH_SIZE); }}
+                >
+                  {label === "2D Design" ? "2D Design & Merch" : label} ({count})
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="asset-counter">
-          Showing <span>{displayedAssets.length}</span> of <span>{filteredAssets.length}</span> items
+          {activeCategory} / Showing <span>{displayedAssets.length}</span> of <span>{filteredAssets.length}</span> items
         </div>
 
         <motion.div layout className="project-grid">
@@ -180,6 +230,8 @@ export default function WorkPage() {
               Load More Works ({filteredAssets.length - visibleCount} remaining) <Arrow />
             </button>
           </div>
+        )}
+          </>
         )}
       </section>
 
