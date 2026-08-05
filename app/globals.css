@@ -287,22 +287,23 @@ img, video { display: block; max-width: 100%; }
   position: fixed;
   inset: 0;
   z-index: 110;
-  background: rgba(8, 8, 12, 0.98);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(6, 6, 10, 0.98);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 120px 32px 60px;
-  gap: 20px;
+  justify-content: flex-start;
+  padding: 100px 24px 40px;
+  gap: 6px;
+  overflow-y: auto;
 }
 
 .mobile-menu a {
   color: #ffffff;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   display: flex;
   align-items: center;
   justify-content: space-between;
