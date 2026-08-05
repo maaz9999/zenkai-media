@@ -10,17 +10,19 @@ import {
   useTransform,
 } from "framer-motion";
 import { products, services } from "./content";
-import { assetItems, getDisplayTitle, MediaAsset } from "./assetsData";
+import { assetItems, MediaAsset } from "./assetsData";
 import { MediaModal } from "./components/MediaModal";
 import { CustomDropdown } from "./components/CustomDropdown";
 import { SiteFooter, AutoplayVideo } from "./components/PageShell";
 import LightRays from "./components/LightRays";
 
 const navItems = [
-  ["Home", "/"],
-  ["Portfolio", "/work"],
-  ["About", "/about"],
-  ["Contact", "/contact"],
+  ["Home", "#top"],
+  ["Services", "#services"],
+  ["Portfolio", "#work"],
+  ["Packages", "#packages"],
+  ["Why Zenkai", "#about"],
+  ["Contact", "#contact"],
 ];
 
 const reveal = {
@@ -30,7 +32,7 @@ const reveal = {
 
 function Logo() {
   return (
-    <a className="logo medievalsharp-regular" href="/" aria-label="Zenkai Media home">
+    <a className="logo medievalsharp-regular" href="#top" aria-label="Zenkai Media home">
       <img src="/favicon.png" alt="Zenkai Media Logo" className="logo-img" />
       <span>ZENKAI MEDIA</span>
     </a>
@@ -84,8 +86,8 @@ function ServiceCard({ service }: { service: (typeof services)[number] }) {
             <li key={item}>{item}</li>
           ))}
         </ul>
-        <a href="/contact" className="service-discuss-link" aria-label={`Start a ${service.title} project`}>
-          <span>Discuss service</span>
+        <a href="#contact" className="service-discuss-link" aria-label={`Start a ${service.title} project`}>
+          <span>Inquire Service</span>
           <Arrow />
         </a>
       </div>
@@ -125,13 +127,24 @@ export default function Home() {
     pointerY.set((event.clientY - rect.top) / rect.height - 0.5);
   }
 
+  function handleAnchorClick(e: MouseEvent<HTMLAnchorElement>, href: string) {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      setMenuOpen(false);
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsSubmitting(true);
     const formData = new FormData(event.currentTarget);
-    formData.append("access_key", "d68962ff-4b36-4171-874e-a1d2d6c6e7a2"); // placeholder access key
+    formData.append("access_key", "d68962ff-4b36-4171-874e-a1d2d6c6e7a2");
     formData.append("subject", "New Zenkai Media Inquiry");
 
     try {
@@ -153,9 +166,15 @@ export default function Home() {
     }
   }
 
-  const visibleAssets = assetItems.filter(
-    (item) => filter === "All" || item.type.toLowerCase() === filter.toLowerCase()
-  ).slice(0, 12);
+  const filteredAssets = assetItems.filter((item) => {
+    if (item.type.toLowerCase() === "software" || item.type.toLowerCase() === "web") return false;
+    if (filter === "All") return true;
+    if (filter === "Reels") return item.type.toLowerCase() === "reels";
+    if (filter === "Thumbnails") return item.type.toLowerCase() === "thumbnails";
+    if (filter === "Posters") return item.type.toLowerCase() === "posters";
+    if (filter === "2D Design") return item.type.toLowerCase() === "2d design";
+    return item.type.toLowerCase() === filter.toLowerCase();
+  });
 
   const currentModalIndex = selectedAsset ? assetItems.findIndex((a) => a.id === selectedAsset.id) : -1;
   const hasPrev = currentModalIndex > 0;
@@ -164,16 +183,18 @@ export default function Home() {
   return (
     <main id="top">
       <div className="grain" aria-hidden="true" />
+      
+      {/* Floating Single-Page Navigation */}
       <nav className="nav shell" aria-label="Main navigation">
         <Logo />
         <div className="desktop-nav">
           {navItems.map(([label, href]) => (
-            <a key={label} href={href} className={label === "Home" ? "active" : ""}>
+            <a key={label} href={href} onClick={(e) => handleAnchorClick(e, href)}>
               {label}
             </a>
           ))}
         </div>
-        <a className="nav-cta" href="/contact">Start a project <Arrow /></a>
+        <a className="nav-cta" href="#contact" onClick={(e) => handleAnchorClick(e, "#contact")}>Start a project <Arrow /></a>
         <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>
           <span /><span />
         </button>
@@ -183,12 +204,13 @@ export default function Home() {
         {menuOpen && (
           <motion.div className="mobile-menu" initial={{ clipPath: "inset(0 0 100% 0)" }} animate={{ clipPath: "inset(0 0 0% 0)" }} exit={{ clipPath: "inset(0 0 100% 0)" }} transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}>
             {navItems.map(([label, href], index) => (
-              <motion.a key={label} href={href} onClick={() => setMenuOpen(false)} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.07 + 0.12 }}>{label} <Arrow /></motion.a>
+              <motion.a key={label} href={href} onClick={(e) => handleAnchorClick(e, href)} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.07 + 0.12 }}>{label} <Arrow /></motion.a>
             ))}
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* Hero Section */}
       <section className="hero shell" onMouseMove={trackPointer}>
         <LightRays
           raysOrigin="top-center"
@@ -207,15 +229,15 @@ export default function Home() {
         />
         <div className="hero-glow" aria-hidden="true" />
         <motion.div className="hero-copy" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.1 } } }}>
-          <motion.div className="eyebrow" variants={reveal}><span /> Independent digital studio · PK / Worldwide</motion.div>
-          <motion.h1 variants={reveal}>We turn<br /><span>ideas</span> into<br />impact.</motion.h1>
+          <motion.div className="eyebrow" variants={reveal}><span /> Independent Video & SMM Studio · PK / Worldwide</motion.div>
+          <motion.h1 variants={reveal}>High-Retention<br /><span>Video Edits</span> &<br />SMM Growth.</motion.h1>
           <motion.div className="hero-bottom" variants={reveal} style={{ flexDirection: "column", alignItems: "flex-start", gap: "24px" }}>
-            <p style={{ maxWidth: "480px", margin: 0 }}>Creative media and digital products engineered to look impossible to ignore.</p>
+            <p style={{ maxWidth: "480px", margin: 0 }}>High-impact YouTube edits, vertical Reels/Shorts, and end-to-end Social Media Management built to scale channel authority.</p>
             <div className="brandif-hero-actions" style={{ marginTop: 0 }}>
-              <a href="/work" className="brandif-btn-primary">
-                Explore Selected Work <Arrow />
+              <a href="#work" onClick={(e) => handleAnchorClick(e, "#work")} className="brandif-btn-primary">
+                Explore Portfolio <Arrow />
               </a>
-              <a href="/contact" className="brandif-btn-secondary">
+              <a href="#contact" onClick={(e) => handleAnchorClick(e, "#contact")} className="brandif-btn-secondary">
                 Start a Project <Arrow />
               </a>
             </div>
@@ -233,67 +255,75 @@ export default function Home() {
             <video src="/Assets/REELS/Ashes reel.mp4" autoPlay muted loop playsInline aria-label="Short-form video edit by Zenkai Media" />
           </motion.div>
           <div className="stage-ring ring-one" /><div className="stage-ring ring-two" />
-          <div className="stage-badge">PLAY<br /><span>YOUR<br />NEXT<br />MOVE</span></div>
+          <div className="stage-badge">EDIT<br /><span>REELS<br />SMM<br />GROWTH</span></div>
         </motion.div>
 
-        <div className="hero-index"><span>01</span><div><i /></div><span>06</span></div>
+        <div className="hero-index"><span>01</span><div><i /></div><span>05</span></div>
       </section>
 
+      {/* Capabilities Marquee */}
       <section className="marquee" aria-label="Zenkai Media capabilities">
         <motion.div animate={reduceMotion ? undefined : { x: ["0%", "-50%"] }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }}>
-          {[0, 1].map((copy) => <span key={copy}>WEB <i>✦</i> EDITING <i>✦</i> APPS <i>✦</i> SOFTWARE <i>✦</i> STRATEGY <i>✦</i> </span>)}
+          {[0, 1].map((copy) => <span key={copy}>VIDEO EDITING <i>✦</i> REELS & SHORTS <i>✦</i> SMM <i>✦</i> THUMBNAILS <i>✦</i> CONTENT STRATEGY <i>✦</i> </span>)}
         </motion.div>
       </section>
 
+      {/* Services Section */}
       <section id="services" className="section services shell">
         <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal}>
-          <div><span className="kicker">WHAT WE DO</span><h2>One studio.<br /><em>Every screen.</em></h2></div>
-          <p>We combine taste, technology, and momentum to build work that earns attention—and keeps it.</p>
+          <div><span className="kicker">WHAT WE DO</span><h2>Core Pillars.<br /><em>Maximum reach.</em></h2></div>
+          <p>We focus 100% on high-retention video production, click-tested packaging, and strategic social channel management.</p>
         </motion.div>
         <div className="service-grid">{services.map((service) => <ServiceCard key={service.number} service={service} />)}</div>
-        <a className="section-more" href="/services">Explore all capabilities <Arrow /></a>
       </section>
 
-
+      {/* Integrated Work Portfolio Showcase Section */}
       <section id="work" className="section work-section">
         <div className="shell">
           <motion.div className="section-heading work-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal}>
-            <div><span className="kicker">SELECTED WORK ARCHIVE</span><h2>Built to<br /><em>be seen.</em></h2></div>
+            <div><span className="kicker">PORTFOLIO SHOWCASE</span><h2>Selected<br /><em>Works.</em></h2></div>
             <div className="filters" role="group" aria-label="Filter projects">
-              {["All", "Posters", "Thumbnails", "Reels"].map((item) => <button key={item} className={filter === item ? "active" : ""} onClick={() => setFilter(item)}>{item}</button>)}
+              {["All", "Reels", "Thumbnails", "Posters", "2D Design"].map((item) => (
+                <button key={item} className={filter === item ? "active" : ""} onClick={() => setFilter(item)}>
+                  {item === "Reels" ? "Reels & Videos" : item === "2D Design" ? "2D & Merch" : item}
+                </button>
+              ))}
             </div>
           </motion.div>
-          <motion.div layout className="project-grid">
+          
+          <motion.div layout className="project-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
             <AnimatePresence mode="popLayout">
-              {visibleAssets.map((item, index) => (
-                <motion.article
-                  className={`project-card ${item.size} ${item.isVideo ? "video-card" : ""}`}
-                  key={item.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.94 }}
-                  transition={{ duration: 0.45, delay: index * 0.03 }}
-                  onClick={() => setSelectedAsset(item)}
-                >
-                  {item.isVideo ? (
-                    <video src={item.src} autoPlay muted loop playsInline aria-label={`${item.title} video project`} />
-                  ) : (
-                    <img src={item.src} alt={`${item.title} project by Zenkai Media`} loading="lazy" />
-                  )}
-                  <div className="project-overlay">
-                    <span>{item.type}</span>
-                    <i>{item.isVideo ? "▶" : <Arrow />}</i>
-                  </div>
-                </motion.article>
-              ))}
+              {filteredAssets
+                .slice(0, 12)
+                .map((item, index) => (
+                  <motion.article
+                    className={`project-card ${item.size} ${item.isVideo ? "video-card" : ""}`}
+                    key={item.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.94 }}
+                    transition={{ duration: 0.45, delay: index * 0.04 }}
+                    onClick={() => setSelectedAsset(item)}
+                  >
+                    {item.isVideo ? (
+                      <AutoplayVideo src={item.src} ariaLabel={`${item.title} video project`} />
+                    ) : (
+                      <img src={item.src} alt={`${item.title} project by Zenkai Media`} loading="lazy" />
+                    )}
+                    <div className="project-overlay">
+                      <span>{item.type}</span>
+                      <i>{item.isVideo ? "▶" : <Arrow />}</i>
+                    </div>
+                  </motion.article>
+                ))}
             </AnimatePresence>
           </motion.div>
 
-          <div className="work-home-footer">
-            <a href="/work" className="section-more">
-              Explore Full Archive ({assetItems.length} Assets) <Arrow />
-            </a>
+          <div className="work-home-footer" style={{ marginTop: "32px", textAlign: "center" }}>
+            <p style={{ color: "rgba(255, 255, 255, 0.6)", fontSize: "14px" }}>
+              Click any project above to expand video/image preview directly.
+            </p>
           </div>
         </div>
 
@@ -311,27 +341,170 @@ export default function Home() {
         />
       </section>
 
-      <section id="about" className="section about shell">
-        <motion.div className="about-orb" aria-hidden="true" animate={reduceMotion ? undefined : { rotate: 360 }} transition={{ duration: 26, repeat: Infinity, ease: "linear" }}><span>ZENKAI MEDIA · IDEAS INTO IMPACT · </span><i /></motion.div>
-        <motion.div className="about-copy" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={reveal}>
-          <span className="kicker">WHY ZENKAI</span>
-          <h2>Small team.<br />Big <em>range.</em></h2>
-          <p>Strategy without the theatre. Design without the sameness. Development without the handoffs. Zenkai Media brings the whole process under one sharp, responsive team.</p>
-          <a href="/about" className="text-link">Meet your next creative partner <Arrow /></a>
+      {/* Monthly Content & SMM Packages Section */}
+      <section id="packages" className="section shell" style={{ paddingTop: "100px", paddingBottom: "100px" }}>
+        <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal}>
+          <div><span className="kicker">PRODUCTION SYSTEM</span><h2>Monthly<br /><em>Packages.</em></h2></div>
+          <p>Repeatable editing and SMM retainers designed to scale your channel output consistently.</p>
         </motion.div>
-        <div className="stats">
-          <div><strong>4×</strong><span>disciplines<br />under one roof</span></div>
-          <div><strong>360°</strong><span>from strategy<br />to launch</span></div>
-          <div><strong>1:1</strong><span>senior-level<br />collaboration</span></div>
+
+        <div className="service-grid">
+          {products.map((prod) => (
+            <motion.article
+              key={prod.code}
+              className="service-card plain-service-card"
+              style={{ "--accent": prod.accent, gridColumn: "span 6 !important" } as React.CSSProperties}
+              whileHover={{ y: -6 }}
+              transition={{ duration: 0.25 }}
+            >
+              <div className="service-top">
+                <span>{prod.code}</span>
+                <span>{prod.label}</span>
+                <i>RETAINER</i>
+              </div>
+              <div className="service-copy">
+                <h3>{prod.name}</h3>
+                <p>{prod.description}</p>
+              </div>
+              <div className="service-footer">
+                <ul>
+                  {prod.includes.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <a href="#contact" onClick={(e) => handleAnchorClick(e, "#contact")} className="service-discuss-link">
+                  <span>Select Package</span>
+                  <Arrow />
+                </a>
+              </div>
+            </motion.article>
+          ))}
         </div>
       </section>
 
+      {/* Why Zenkai Section */}
+      <section id="about" className="section about shell">
+        <motion.div className="about-orb" aria-hidden="true" animate={reduceMotion ? undefined : { rotate: 360 }} transition={{ duration: 26, repeat: Infinity, ease: "linear" }}><span>ZENKAI MEDIA · EDITING & SMM STUDIO · </span><i /></motion.div>
+        <motion.div className="about-copy" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={reveal}>
+          <span className="kicker">WHY ZENKAI</span>
+          <h2>Specialized.<br />By <em>design.</em></h2>
+          <p>No generic web fluff, no extra noise. Zenkai Media focuses exclusively on high-retention video editing and strategic social media management for creators, esports legends, and ambitious brands.</p>
+        </motion.div>
+
+        <div className="stats">
+          <div><strong>100%</strong><span>video editing &amp;<br />SMM focus</span></div>
+          <div><strong>10M+</strong><span>watch-time<br />impressions</span></div>
+          <div><strong>1:1</strong><span>senior editor<br />collaboration</span></div>
+        </div>
+      </section>
+
+      {/* High-Impact Bento Comparison Showcase */}
+      <section className="comparison-section shell">
+        <motion.div className="comparison-header-wrapper" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal}>
+          <span className="kicker">STUDIO VS TRADITIONAL AGENCY</span>
+          <h2>Built Different for <em>Channel Growth.</em></h2>
+          <p>Why top creators and gaming legends partner with Zenkai Media instead of slow traditional agencies.</p>
+        </motion.div>
+
+        <div className="bento-comparison-grid">
+          {/* Zenkai Studio Card */}
+          <motion.div className="bento-card-zenkai" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            <div>
+              <div className="bento-badge-hero">
+                <span className="pulse-dot" /> ZENKAI MEDIA STUDIO ✦ HIGH RETENTION ENGINE
+              </div>
+              <h3>1:1 Senior Editing &amp; Channel Growth Engine</h3>
+              <p className="bento-subhead">A dedicated media team handling long-form YouTube cuts, vertical viral reels, thumbnails, and channel publishing under one roof.</p>
+              
+              <div className="bento-features-list">
+                <div className="bento-feature-item">
+                  <div className="bento-feature-header">
+                    <span className="icon-check">✓</span>
+                    <h4>Direct 1:1 Senior Team</h4>
+                  </div>
+                  <p>Work directly with lead editors &amp; strategists. Zero middleman handoffs.</p>
+                </div>
+                <div className="bento-feature-item">
+                  <div className="bento-feature-header">
+                    <span className="icon-check">✓</span>
+                    <h4>Full Discipline Engine</h4>
+                  </div>
+                  <p>Long-form, Shorts/Reels, SMM, Thumbnails &amp; Growth Creative in sync.</p>
+                </div>
+                <div className="bento-feature-item">
+                  <div className="bento-feature-header">
+                    <span className="icon-check">✓</span>
+                    <h4>Rapid 48h Turnaround</h4>
+                  </div>
+                  <p>Continuous weekly sprints &amp; daily social publishing cadence.</p>
+                </div>
+                <div className="bento-feature-item">
+                  <div className="bento-feature-header">
+                    <span className="icon-check">✓</span>
+                    <h4>4K 60fps Pipeline</h4>
+                  </div>
+                  <p>High-retention motion FX, custom sound design &amp; color grading.</p>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ paddingTop: "20px", borderTop: "1px solid rgba(255, 102, 0, 0.2)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+              <span style={{ font: "10px var(--font-geist-mono), monospace", color: "var(--acid)", letterSpacing: "0.1em", textTransform: "uppercase" }}>✦ 100% RETENTION GUARANTEE</span>
+              <a href="#contact" onClick={(e) => handleAnchorClick(e, "#contact")} className="brandif-btn-primary" style={{ padding: "10px 20px", fontSize: "13px" }}>
+                Start Studio Partnership <Arrow />
+              </a>
+            </div>
+          </motion.div>
+
+          {/* Traditional Agency Card */}
+          <motion.div className="bento-card-agency" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }}>
+            <div>
+              <div className="bento-badge-muted">TRADITIONAL AGENCIES</div>
+              <h3>Slow Meetings &amp; Bloated Overhead</h3>
+              <p className="bento-subhead">Generic agencies that treat video as an afterthought with bloated account managers.</p>
+              
+              <div className="agency-flaws-list">
+                <div className="agency-flaw-item">
+                  <span className="icon-cross">✕</span>
+                  <div>
+                    <h5>Junior Account Hand-offs</h5>
+                    <p>Passed to inexperienced interns behind complex email chains.</p>
+                  </div>
+                </div>
+                <div className="agency-flaw-item">
+                  <span className="icon-cross">✕</span>
+                  <div>
+                    <h5>Siloed Vendors</h5>
+                    <p>Splitting video, thumbnails &amp; SMM across 3–4 different agencies.</p>
+                  </div>
+                </div>
+                <div className="agency-flaw-item">
+                  <span className="icon-cross">✕</span>
+                  <div>
+                    <h5>Sluggish Output</h5>
+                    <p>Weeks wasted in deck approvals &amp; unnecessary status calls.</p>
+                  </div>
+                </div>
+                <div className="agency-flaw-item">
+                  <span className="icon-cross">✕</span>
+                  <div>
+                    <h5>Outsourced Template Cuts</h5>
+                    <p>Generic Premiere presets with zero watch-time optimization.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
       <section id="contact" className="contact-section">
         <div className="shell contact-grid">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={reveal}>
             <span className="kicker">HAVE A PROJECT?</span>
-            <h2>Let’s make<br />it <em>unmissable.</em></h2>
-            <p>Tell us what you’re building, what needs to change, or where you want to go next.</p>
+            <h2>Let’s make<br />it <em>viral.</em></h2>
+            <p>Tell us about your content goals, current channel metrics, or campaign deadlines.</p>
             <div className="home-direct-contact">
               <div className="contact-pill">
                 <span>Email</span>
@@ -358,13 +531,13 @@ export default function Home() {
                 <CustomDropdown
                   name="service"
                   placeholder="Select a service"
-                  options={["Web experiences", "Video & social", "Custom software", "Brand identity", "Growth creative", "Something else"]}
+                  options={["Video editing", "Social media management", "Thumbnail design", "Growth creative", "Full content engine", "Something else"]}
                   value={serviceType}
                   onChange={setServiceType}
                   required
                 />
               </label>
-              <label suppressHydrationWarning><span>Project snapshot</span><textarea name="message" rows={3} placeholder="A few details about the idea, timing, and goals…" autoComplete="off" data-lpignore="true" data-1p-ignore required /></label>
+              <label suppressHydrationWarning><span>Project snapshot</span><textarea name="message" rows={3} placeholder="A few details about the project, channel, and goals…" autoComplete="off" data-lpignore="true" data-1p-ignore required /></label>
               <button className="submit-button" type="submit" disabled={isSubmitting}>{isSubmitting ? "Sending..." : "Send the brief"} <Arrow /></button>
             </form>
           )}

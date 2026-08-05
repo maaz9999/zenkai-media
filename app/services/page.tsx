@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { PageFrame, PageHero, Arrow, AutoplayVideo } from "../components/PageShell";
 import { services } from "../content";
@@ -8,42 +8,40 @@ import { assetItems, MediaAsset } from "../assetsData";
 import { MediaModal } from "../components/MediaModal";
 
 export default function ServicesPage() {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.location.replace("/#services");
+    }
+  }, []);
+
   const [selectedAsset, setSelectedAsset] = useState<MediaAsset | null>(null);
 
   // Helper to get matching work for each service
   function getServiceWork(serviceTitle: string): MediaAsset[] {
     const titleLower = serviceTitle.toLowerCase();
-    if (titleLower.includes("web")) {
-      return assetItems.filter((a) => a.type.toLowerCase() === "web");
-    }
-    if (titleLower.includes("video") || titleLower.includes("social")) {
+    if (titleLower.includes("video")) {
       return [
         assetItems.find((a) => a.id === "reels-1"),
         assetItems.find((a) => a.id === "reels-7"),
         assetItems.find((a) => a.id === "reels-3"),
       ].filter(Boolean) as MediaAsset[];
     }
-    if (titleLower.includes("growth")) {
-      // Put growth_creative, V2, and V3 videos in Growth Creative section
+    if (titleLower.includes("social") || titleLower.includes("management")) {
       return [
         assetItems.find((a) => a.id === "reel-growth-creative"),
         assetItems.find((a) => a.id === "reel-v2"),
         assetItems.find((a) => a.id === "reel-v3"),
       ].filter(Boolean) as MediaAsset[];
     }
-    if (titleLower.includes("brand")) {
-      // Exclude posters-4 (runner up poster)
-      return assetItems.filter((a) => a.type.toLowerCase() === "posters" && a.id !== "posters-4").slice(0, 3);
-    }
     if (titleLower.includes("thumbnail")) {
       return assetItems.filter((a) => a.type.toLowerCase() === "thumbnails").slice(0, 4);
     }
-    if (titleLower.includes("software") || titleLower.includes("custom")) {
+    if (titleLower.includes("growth")) {
       return [
-        assetItems.find((a) => a.id === "software-mark47"),
+        assetItems.find((a) => a.id === "reel-growth-creative"),
+        assetItems.find((a) => a.id === "reel-v2"),
       ].filter(Boolean) as MediaAsset[];
     }
-    // Default fallback
     return assetItems.filter((a) => a.type.toLowerCase() === "posters" && a.id !== "posters-4").slice(0, 4);
   }
 
@@ -52,20 +50,11 @@ export default function ServicesPage() {
     if (titleLower.includes("thumbnail")) {
       return { href: "/work?tab=Thumbnails", label: "Explore All Thumbnails" };
     }
-    if (titleLower.includes("web")) {
-      return { href: "/work?tab=Web", label: "Explore Web Work" };
+    if (titleLower.includes("video")) {
+      return { href: "/work?tab=Reels", label: "Explore Video Edits" };
     }
-    if (titleLower.includes("video") || titleLower.includes("social")) {
-      return { href: "/work?tab=Reels", label: "Explore Reels & Video" };
-    }
-    if (titleLower.includes("software") || titleLower.includes("custom")) {
-      return { href: "/work?tab=Web", label: "Explore Software Archive" };
-    }
-    if (titleLower.includes("brand")) {
-      return { href: "/work?tab=Posters", label: "Explore Brand Graphics" };
-    }
-    if (titleLower.includes("growth")) {
-      return { href: "/work?tab=Reels", label: "Explore Growth Creative" };
+    if (titleLower.includes("social")) {
+      return { href: "/work?tab=Reels", label: "Explore SMM Creative" };
     }
     return { href: "/work", label: "Explore Work Archive" };
   }
@@ -74,10 +63,10 @@ export default function ServicesPage() {
     <PageFrame active="Services">
       <PageHero
         eyebrow="CAPABILITIES"
-        title="MORE"
-        italic="Range."
+        title="CORE"
+        italic="Pillars."
         index="02"
-        copy="From the first strategic question to the final shipped product, Zenkai Media keeps creative and technical thinking in the same room."
+        copy="High-retention video editing and strategic Social Media Management (SMM) engineered to scale viewer retention, CTR, and channel growth."
         videoSrc="/media/services-hero-landscape.mp4"
         mobileVideoSrc="/media/services-hero-portrait.mp4"
         posterSrc="/media/services-hero-landscape.png"
@@ -85,18 +74,15 @@ export default function ServicesPage() {
       />
       <section className="route-section shell">
         <div className="route-service-list">
-          {services.map((service, index) => {
+          {services.map((service) => {
             const relatedWork = getServiceWork(service.title);
             const workLinkInfo = getServiceWorkLink(service.title);
-            const isWeb = service.title.toLowerCase().includes("web");
-            const isSoftware = service.title.toLowerCase().includes("software");
             const isThumbnail = service.title.toLowerCase().includes("thumbnail");
+
             return (
               <motion.article
                 key={service.number}
-                className={`service-showcase-panel ${
-                  isSoftware ? "software-split-panel" : isWeb ? "web-showcase-panel" : ""
-                }`}
+                className="service-showcase-panel"
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
@@ -132,271 +118,41 @@ export default function ServicesPage() {
                   </div>
                 </div>
 
-                {/* Right Column / Bottom Section: Featured Showcase */}
-                {isSoftware ? (
-                  <div className="software-banner-container">
-                    <div className="service-gallery-head">
-                      <span>Featured Software Platform ({relatedWork.length})</span>
-                    </div>
-                    {relatedWork.map((work) => {
-                      const domain = work.url
-                        ? work.url.replace("https://", "").replace("http://", "").replace(/\/$/, "")
-                        : "mark47.com";
-                      return (
-                        <div className="web-browser-frame software-hero-frame" key={work.id}>
-                          {/* Chrome / Mac OS Browser Bar */}
-                          <div className="browser-header">
-                            <div className="browser-dots">
-                              <span className="dot red" />
-                              <span className="dot yellow" />
-                              <span className="dot green" />
-                            </div>
-                            <div className="browser-address">
-                              <span className="lock-icon">🔒</span>
-                              <span>{domain}</span>
-                            </div>
-                            <span className="browser-badge">LIVE SYSTEM</span>
-                          </div>
-
-                          {/* High Visibility Banner Viewport */}
-                          <div className="browser-viewport" onClick={() => setSelectedAsset(work)}>
-                            <img src={work.src} alt={work.title} loading="lazy" className="browser-banner-img" />
-                            <div className="browser-hover-shield">
-                              <span>EXPAND PREVIEW ↗</span>
-                            </div>
-                          </div>
-
-                          {/* Project Meta Info */}
-                          <div className="browser-footer-info">
-                            <div className="browser-title-row">
-                              <h3>{work.title}</h3>
-                              {work.url && (
-                                <a
-                                  href={work.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="browser-live-btn"
-                                >
-                                  VISIT SITE ↗
-                                </a>
-                              )}
-                            </div>
-                            <p className="browser-desc">
-                              Broadcast & live production software engineered for PUBG Mobile esports tournaments, real-time match telemetry, observer overlays, and graphics automation.
-                            </p>
-                          </div>
+                {/* Right Column: Featured Work Showcase */}
+                <div className="service-showcase-gallery">
+                  <div className="service-gallery-head">
+                    <span>Selected Samples ({relatedWork.length})</span>
+                    <a href={workLinkInfo.href}>
+                      View tab <Arrow />
+                    </a>
+                  </div>
+                  <div className={`service-gallery-grid ${isThumbnail ? "thumbnail-gallery-grid" : ""}`}>
+                    {relatedWork.map((work) => (
+                      <div
+                        key={work.id}
+                        className="service-work-thumbnail-card"
+                        onClick={() => setSelectedAsset(work)}
+                      >
+                        {work.isVideo ? (
+                          <AutoplayVideo src={work.src} className="service-work-media" />
+                        ) : (
+                          <img src={work.src} alt={work.title} className="service-work-media" loading="lazy" />
+                        )}
+                        <div className="service-work-hover-overlay">
+                          <span>{work.type}</span>
+                          <i>{work.isVideo ? "▶" : "↗"}</i>
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))}
                   </div>
-                ) : isWeb ? (
-                  <div className="web-browser-section">
-                    <div className="service-gallery-head">
-                      <span>Featured {service.title} Projects ({relatedWork.length})</span>
-                    </div>
-                    <div className="web-browser-grid">
-                      {relatedWork.map((work) => {
-                        const domain = work.url
-                          ? work.url.replace("https://", "").replace("http://", "").replace(/\/$/, "")
-                          : "website.com";
-                        return (
-                          <div className="web-browser-frame" key={work.id}>
-                            {/* Chrome / Mac OS Browser Bar */}
-                            <div className="browser-header">
-                              <div className="browser-dots">
-                                <span className="dot red" />
-                                <span className="dot yellow" />
-                                <span className="dot green" />
-                              </div>
-                              <div className="browser-address">
-                                <span className="lock-icon">🔒</span>
-                                <span>{domain}</span>
-                              </div>
-                              <span className="browser-badge">{work.isVideo ? "DEMO VIDEO" : "LIVE SYSTEM"}</span>
-                            </div>
-
-                            {/* Crisp Banner Viewport (100% Fits perfectly without cropping) */}
-                            <div className="browser-viewport" onClick={() => setSelectedAsset(work)}>
-                              {work.isVideo ? (
-                                <AutoplayVideo src={work.src} className="browser-banner-img" />
-                              ) : (
-                                <img src={work.src} alt={work.title} loading="lazy" className="browser-banner-img" />
-                              )}
-                              <div className="browser-hover-shield">
-                                <span>EXPAND PREVIEW ↗</span>
-                              </div>
-                            </div>
-
-                            {/* Project Meta Info */}
-                            <div className="browser-footer-info">
-                              <div className="browser-title-row">
-                                <h3>{work.title}</h3>
-                                {work.url && (
-                                  <a
-                                    href={work.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="browser-live-btn"
-                                  >
-                                    VISIT SITE ↗
-                                  </a>
-                                )}
-                              </div>
-                              <p className="browser-desc">
-                                {work.title.toLowerCase().includes("solentrix")
-                                  ? "Clean energy platform in Pakistan offering premium solar installations, smart battery storage, and custom hybrid inverters."
-                                  : "AI Talent Marketplace matching enterprise companies with vetted machine learning experts, data scientists, and consulting services."}
-                              </p>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ) : isThumbnail ? (
-                  <div className="thumbnail-showcase-section">
-                    <div className="service-gallery-head">
-                      <span>High-CTR YouTube Thumbnails ({relatedWork.length})</span>
-                    </div>
-                    <div className="thumbnail-showcase-grid">
-                      {relatedWork.map((work) => (
-                        <div
-                          key={work.id}
-                          className="thumbnail-preview-card"
-                          onClick={() => setSelectedAsset(work)}
-                        >
-                          <div className="thumbnail-media-wrap">
-                            <img src={work.src} alt={work.title} loading="lazy" />
-                            <div className="thumbnail-hover-badge">
-                              <span>EXPAND THUMBNAIL ↗</span>
-                            </div>
-                          </div>
-                          <div className="thumbnail-card-info">
-                            <span>YOUTUBE THUMBNAIL</span>
-                            <h4>{work.title}</h4>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="service-showcase-gallery">
-                    <div className="service-gallery-head">
-                      <span>Featured Work ({relatedWork.length})</span>
-                    </div>
-                    <div className="service-gallery-grid">
-                      {relatedWork.map((work) => {
-                        const cardClass =
-                          work.type.toLowerCase() === "web"
-                            ? "web-card banner-card"
-                            : work.type.toLowerCase() === "reels"
-                            ? "reel-card video-card"
-                            : work.type.toLowerCase() === "thumbnails"
-                            ? "thumbnail-card"
-                            : "poster-card";
-                        return (
-                          <div
-                            key={work.id}
-                            className={`service-work-card ${cardClass}`}
-                            onClick={() => setSelectedAsset(work)}
-                          >
-                            {work.isVideo ? (
-                              <AutoplayVideo src={work.src} />
-                            ) : (
-                              <img src={work.src} alt={work.title} loading="lazy" />
-                            )}
-                            <div className="service-work-overlay">
-                              <span>{work.type}</span>
-                              <h4>{work.title}</h4>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
+                </div>
               </motion.article>
             );
           })}
         </div>
       </section>
 
-      {/* Brandif-inspired Interactive 4-Step Studio Process Section */}
-      <section className="studio-process-section shell">
-        <motion.div
-          className="section-heading"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={{
-            hidden: { opacity: 0, y: 30 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.65 } },
-          }}
-        >
-          <div>
-            <span className="kicker">STUDIO WORKFLOW</span>
-            <h2>
-              From concept.<br />
-              <em>To momentum.</em>
-            </h2>
-          </div>
-          <p>Four disciplined phases designed to eliminate friction and ship extraordinary work on time.</p>
-        </motion.div>
-
-        <div className="process-grid">
-          {[
-            {
-              step: "01",
-              phase: "STRATEGY & AUDIT",
-              title: "Uncovering the Advantage",
-              desc: "We analyze your audience, positioning gaps, and brand identity before crafting the core creative direction.",
-              deliverable: "Positioning Brief & Architecture",
-            },
-            {
-              step: "02",
-              phase: "PROTOTYPING",
-              title: "High-Fidelity Direction",
-              desc: "Developing responsive UI components, motion guidelines, video storyboards, and high-impact visual design.",
-              deliverable: "Interactive Prototypes & Tokens",
-            },
-            {
-              step: "03",
-              phase: "ENGINEERING",
-              title: "Production & Polish",
-              desc: "Building clean full-stack applications in Next.js, Framer Motion, and producing high-CTR media assets.",
-              deliverable: "Shipped Code & Media Assets",
-            },
-            {
-              step: "04",
-              phase: "LAUNCH & SCALE",
-              title: "Performance Engine",
-              desc: "Deploying high-speed infrastructure, measuring real-time telemetry, and optimizing for audience growth.",
-              deliverable: "Live System & Growth Metrics",
-            },
-          ].map((item, idx) => (
-            <motion.div
-              key={item.step}
-              className="process-card"
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.08 }}
-            >
-              <div className="process-header">
-                <span className="process-step">{item.step}</span>
-                <span className="process-phase">{item.phase}</span>
-              </div>
-              <h3>{item.title}</h3>
-              <p>{item.desc}</p>
-              <div className="process-deliverable-pill">
-                <span>Output:</span> {item.deliverable}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Modern Comparison Matrix Table */}
+      {/* Comparison Section */}
       <section className="comparison-section shell">
         <motion.div
           className="section-heading"
@@ -411,11 +167,11 @@ export default function ServicesPage() {
           <div>
             <span className="kicker">WHY ZENKAI MEDIA</span>
             <h2>
-              Modern studio.<br />
-              <em>Zero overhead.</em>
+              Focused studio.<br />
+              <em>Zero fluff.</em>
             </h2>
           </div>
-          <p>How our integrated team compares to bloated traditional agency retainers.</p>
+          <p>How our dedicated Video & SMM team compares to generic traditional agencies.</p>
         </motion.div>
 
         <div className="comparison-table-wrapper">
@@ -433,22 +189,22 @@ export default function ServicesPage() {
               },
               {
                 feature: "Disciplines Covered",
-                zenkai: "Web, Software, Video, 2D Design, Thumbnails",
+                zenkai: "Video Editing (Long/Short), SMM, Thumbnails, Growth Creative",
                 traditional: "Siloed across 3–4 separate vendors",
               },
               {
                 feature: "Execution Speed",
-                zenkai: "Rapid weekly iterations & shipped builds",
+                zenkai: "Rapid weekly iterations & daily publishing",
                 traditional: "Months of bloated meetings & decks",
               },
               {
                 feature: "Technical Quality",
-                zenkai: "Next.js, Framer Motion, 4K Video Pipeline",
-                traditional: "Outsourced templates & slow plugins",
+                zenkai: "4K 60fps Pipeline, High-Retention FX, Sound Design",
+                traditional: "Outsourced generic template cuts",
               },
               {
                 feature: "Focus & Outcome",
-                zenkai: "High CTR, conversion performance, & impact",
+                zenkai: "High CTR, watch-time retention & channel growth",
                 traditional: "Hourly billing & Scope bloat",
               },
             ].map((row, idx) => (
@@ -469,8 +225,8 @@ export default function ServicesPage() {
       <section className="route-callout shell">
         <span className="kicker">READY WHEN YOU ARE</span>
         <h2>
-          Bring the ambition.<br />
-          <em>We’ll bring the range.</em>
+          Scale your channel.<br />
+          <em>We’ll handle the content.</em>
         </h2>
         <a href="/contact" className="brandif-btn-primary">
           Work with Zenkai Media <Arrow />

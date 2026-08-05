@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Zenkai Media — Ideas Into Impact",
-  description: "Creative media, web experiences, apps, and custom software for ambitious brands.",
+  title: "Zenkai Media — High-Retention Video Editing & SMM Studio",
+  description: "High-retention video editing, vertical Reels & Shorts, and end-to-end Social Media Management (SMM) for creators and ambitious brands.",
   icons: {
     icon: "/favicon.png",
     shortcut: "/favicon.png",
@@ -22,15 +22,15 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("http://localhost:3000"),
   openGraph: {
-    title: "Zenkai Media — Ideas Into Impact",
-    description: "Creative media and digital products engineered to look impossible to ignore.",
+    title: "Zenkai Media — High-Retention Video Editing & SMM Studio",
+    description: "High-impact video edits, vertical reels, thumbnails, and channel growth strategy.",
     type: "website",
-    images: [{ url: "/og.png", width: 1536, height: 864, alt: "Zenkai Media — Ideas Into Impact" }],
+    images: [{ url: "/og.png", width: 1536, height: 864, alt: "Zenkai Media — Video Editing & SMM" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Zenkai Media — Ideas Into Impact",
-    description: "Creative media and digital products engineered to look impossible to ignore.",
+    title: "Zenkai Media — High-Retention Video Editing & SMM Studio",
+    description: "High-impact video edits, vertical reels, thumbnails, and channel growth strategy.",
     images: ["/og.png"],
   },
 };

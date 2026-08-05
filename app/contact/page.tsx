@@ -11,7 +11,11 @@ export default function ContactPage() {
   const [serviceType, setServiceType] = useState("");
   const [budgetRange, setBudgetRange] = useState("");
   
-  useEffect(() => setReady(true), []);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.location.replace("/#contact");
+    }
+  }, []);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -84,7 +88,7 @@ export default function ContactPage() {
               <CustomDropdown
                 name="service"
                 placeholder="Select one"
-                options={["Website", "Video & social", "Custom software", "Brand identity", "Growth creative", "Not sure yet"]}
+                options={["Video editing", "Social media management", "Thumbnail design", "Growth creative", "Full content engine", "Not sure yet"]}
                 value={serviceType}
                 onChange={setServiceType}
                 required

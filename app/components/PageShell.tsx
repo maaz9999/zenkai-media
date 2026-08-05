@@ -95,7 +95,7 @@ export function SiteFooter() {
         <div className="footer-brand">
           <Logo />
           <p className="footer-bio">
-            Independent creative technology & media studio. Engineering high-impact websites, video edits, reels, thumbnails, and custom software for ambitious brands.
+            Independent Video Editing & Social Media Management (SMM) studio. Engineering high-retention video edits, short-form reels, thumbnails, and channel growth strategies.
           </p>
           <div className="footer-availability">
             <span className="dot" /> Taking on selected projects
@@ -105,21 +105,22 @@ export function SiteFooter() {
         <div className="footer-col">
           <h4>Navigation</h4>
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/work">Portfolio Archive</a></li>
-            <li><a href="/about">About Studio</a></li>
-            <li><a href="/contact">Contact Us</a></li>
+            <li><a href="#top">Home</a></li>
+            <li><a href="#services">Capabilities</a></li>
+            <li><a href="#work">Portfolio Showcase</a></li>
+            <li><a href="#packages">Monthly Packages</a></li>
+            <li><a href="#about">Why Zenkai</a></li>
+            <li><a href="#contact">Contact Us</a></li>
           </ul>
         </div>
 
         <div className="footer-col">
           <h4>Disciplines</h4>
           <ul>
-            <li><a href="/work?tab=Web">Web Experiences</a></li>
-            <li><a href="/work?tab=Reels">Video & Reels Editing</a></li>
-            <li><a href="/work?tab=Thumbnails">Thumbnail Suite</a></li>
-            <li><a href="/work?tab=2D Design">2D Design & Merch</a></li>
-            <li><a href="/work?tab=Web">Custom Software</a></li>
+            <li><a href="#services">Video Editing (Long & Short)</a></li>
+            <li><a href="#services">Social Media Management (SMM)</a></li>
+            <li><a href="#services">Thumbnail Suite</a></li>
+            <li><a href="#packages">Growth &amp; Social Retainers</a></li>
           </ul>
         </div>
 

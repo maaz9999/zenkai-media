@@ -1,102 +1,70 @@
 export const services = [
   {
     number: "01",
-    title: "Web experiences",
-    tag: "DESIGN + DEVELOPMENT",
-    description: "Distinctive websites that move fast, feel considered, and turn attention into action.",
-    deliverables: ["Creative direction", "UI/UX systems", "Interactive development"],
-    color: "#00f0ff", // Electric Cyan
-  },
-  {
-    number: "02",
-    title: "Video & social",
-    tag: "EDITING + CONTENT",
-    description: "High-retention edits, thumbnails, and campaigns built for the speed of modern feeds.",
-    deliverables: ["Long-form editing", "Reels & shorts", "Thumbnail design"],
+    title: "Video editing",
+    tag: "LONG & SHORT FORM EDITING",
+    description: "High-retention video edits for YouTube, Reels, TikToks, and podcasts engineered to capture attention and boost watch time.",
+    deliverables: ["YouTube long-form edits", "Reels, Shorts & TikToks", "Sound design & SFX", "Motion graphics & VFX"],
     color: "#b844ff", // Neon Violet / Purple
   },
   {
+    number: "02",
+    title: "Social media management",
+    tag: "STRATEGY + GROWTH + PUBLISHING",
+    description: "Complete channel management, content calendar execution, audience engagement, and feed strategy tailored for growth.",
+    deliverables: ["Content strategy & planning", "Multi-platform publishing", "Community management", "Performance analytics"],
+    color: "#00f0ff", // Electric Cyan
+  },
+  {
     number: "03",
-    title: "Custom software",
-    tag: "SYSTEMS + AUTOMATION",
-    description: "Tailored tools and scalable software that remove friction from ambitious businesses.",
-    deliverables: ["Internal platforms", "Workflow automation", "API integrations"],
-    color: "#00ff9d", // Emerald Mint Green
+    title: "Thumbnail design",
+    tag: "PACKAGING + GRAPHICS",
+    description: "High-CTR YouTube and social media thumbnails designed to maximize click-through rate, impressions, and visual authority.",
+    deliverables: ["YouTube thumbnails", "High-CTR packaging", "Channel branding & art", "Key visual graphics"],
+    color: "#ffb700", // Sunburst Gold
   },
   {
     number: "04",
-    title: "Brand identity",
-    tag: "STRATEGY + DESIGN",
-    description: "Flexible brand systems with a clear point of view, built to stay recognizable everywhere.",
-    deliverables: ["Positioning", "Visual identity", "Brand guidelines"],
-    color: "#ff6600", // Signature Acid Orange
-  },
-  {
-    number: "05",
     title: "Growth creative",
-    tag: "CAMPAIGNS + CONTENT",
-    description: "Always-on creative systems that give brands more useful ideas and more consistent output.",
-    deliverables: ["Campaign concepts", "Content systems", "Performance creative"],
+    tag: "VIRAL HOOKS + CAMPAIGNS",
+    description: "High-performing video ad creatives, social hooks, and promotional content systems designed to convert viewers into followers.",
+    deliverables: ["Ad video edits", "Viral hook variations", "Campaign content systems", "Social promo assets"],
     color: "#ff007f", // Electric Hot Pink
-  },
-  {
-    number: "06",
-    title: "Thumbnail design",
-    tag: "PACKAGING + GRAPHICS",
-    description: "High-CTR YouTube and social media thumbnails designed to maximize click-through rate and visual authority.",
-    deliverables: ["YouTube thumbnails", "High-CTR packaging", "Key visual graphics"],
-    color: "#ffb700", // Sunburst Gold
   },
 ];
 
 export const products = [
   {
     code: "P/01",
-    name: "Launchpad",
-    label: "WEBSITE SYSTEM",
-    description: "A strategy-led, high-impact company website designed and developed as one focused launch.",
-    includes: ["5–8 core pages", "CMS setup", "Motion system", "Launch support"],
-    accent: "#ff6600",
+    name: "Content Engine",
+    label: "MONTHLY EDITING SYSTEM",
+    description: "A repeatable video production system for creators & brands needing consistent long-form and short-form edits.",
+    includes: ["Monthly editing calendar", "4x Long-form edits", "12x Reels / Shorts", "Thumbnail suite"],
+    accent: "#b844ff",
   },
   {
     code: "P/02",
-    name: "Content Engine",
-    label: "MONTHLY MEDIA SYSTEM",
-    description: "A repeatable production system for teams that need consistent edits, reels, and thumbnails.",
-    includes: ["Monthly content plan", "Long + short edits", "Thumbnail suite", "Asset library"],
-    accent: "#ff7700",
+    name: "SMM Takeover",
+    label: "FULL CHANNEL MANAGEMENT",
+    description: "End-to-end management of your social media profiles, from content scheduling to growth execution and engagement.",
+    includes: ["Daily/Weekly publishing", "Copywriting & hashtags", "Audience engagement", "Monthly analytics report"],
+    accent: "#00f0ff",
   },
   {
     code: "P/03",
-    name: "MVP Sprint",
-    label: "PRODUCT LAUNCH",
-    description: "A rapid product sprint that turns a validated concept into a testable app experience.",
-    includes: ["Product workshop", "UX prototype", "MVP build", "Launch roadmap"],
-    accent: "#ff8800",
+    name: "Shorts Sprint",
+    label: "SHORT-FORM PACKAGE",
+    description: "A rapid production batch turning raw footage or podcasts into high-retention vertical reels and clips.",
+    includes: ["15-30 vertical reels", "Custom captions & motion", "Trending audio sync", "Hooks & CTA design"],
+    accent: "#ff007f",
   },
   {
     code: "P/04",
-    name: "Ops Automator",
-    label: "WORKFLOW PRODUCT",
-    description: "A custom internal system that connects repetitive work and gives your team time back.",
-    includes: ["Process mapping", "Custom dashboard", "Integrations", "Team onboarding"],
-    accent: "#ff5500",
-  },
-  {
-    code: "P/05",
-    name: "Brand Core",
-    label: "IDENTITY SYSTEM",
-    description: "A sharp strategic and visual foundation for a new brand or the next version of an existing one.",
-    includes: ["Brand positioning", "Visual identity", "Social toolkit", "Guidelines"],
-    accent: "#ff9900",
-  },
-  {
-    code: "P/06",
-    name: "Creator Stack",
-    label: "PERSONAL BRAND SYSTEM",
-    description: "A complete digital presence for creators, founders, athletes, and competitive talent.",
-    includes: ["Personal site", "Media kit", "Content templates", "Channel art"],
-    accent: "#ff4500",
+    name: "Thumbnail Suite",
+    label: "HIGH-CTR PACKAGING",
+    description: "A dedicated package of click-tested YouTube thumbnails and social covers designed to scale your CTR.",
+    includes: ["10x Custom thumbnails", "A/B testing variants", "Source PSD files", "CTR optimization guide"],
+    accent: "#ffb700",
   },
 ];
 
