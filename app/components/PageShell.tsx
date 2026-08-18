@@ -13,7 +13,7 @@ export const navItems = [
 ] as const;
 
 export function Arrow() {
-  return <span aria-hidden="true">↗</span>;
+  return null;
 }
 
 export function Logo() {
@@ -47,7 +47,7 @@ export function SiteNav({ active }: { active?: string }) {
           ))}
         </div>
         <a className="nav-cta" href="/contact">
-          Start a project <Arrow />
+          Start a project
         </a>
         <button
           className="menu-button"
@@ -78,7 +78,7 @@ export function SiteNav({ active }: { active?: string }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.06 + 0.12 }}
               >
-                {label} <Arrow />
+                {label}
               </motion.a>
             ))}
           </motion.div>
@@ -89,13 +89,18 @@ export function SiteNav({ active }: { active?: string }) {
 }
 
 export function SiteFooter() {
+  function handleBackToTop(e: React.MouseEvent<HTMLAnchorElement>) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   return (
     <footer className="footer shell">
       <div className="footer-top-grid">
         <div className="footer-brand">
           <Logo />
           <p className="footer-bio">
-            Independent Video Editing & Social Media Management (SMM) studio. Engineering high-retention video edits, short-form reels, thumbnails, and channel growth strategies.
+            Independent Video Editing &amp; Social Media Management (SMM) studio. Engineering high-retention video edits, short-form reels, thumbnails, and channel growth strategies.
           </p>
           <div className="footer-availability">
             <span className="dot" /> Taking on selected projects
@@ -105,7 +110,7 @@ export function SiteFooter() {
         <div className="footer-col">
           <h4>Navigation</h4>
           <ul>
-            <li><a href="#top">Home</a></li>
+            <li><a href="#top" onClick={handleBackToTop}>Home</a></li>
             <li><a href="#services">Capabilities</a></li>
             <li><a href="#work">Portfolio Showcase</a></li>
             <li><a href="#packages">Monthly Packages</a></li>
@@ -115,31 +120,31 @@ export function SiteFooter() {
         </div>
 
         <div className="footer-col">
-          <h4>Disciplines</h4>
+          <h4>Social Media</h4>
           <ul>
-            <li><a href="#services">Video Editing (Long & Short)</a></li>
-            <li><a href="#services">Social Media Management (SMM)</a></li>
-            <li><a href="#services">Thumbnail Suite</a></li>
-            <li><a href="#packages">Growth &amp; Social Retainers</a></li>
+            <li><a href="https://youtube.com/@zenkaimedia" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+            <li><a href="https://x.com/zenkaimedia" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
+            <li><a href="https://instagram.com/zenkai.media" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            <li><a href="https://discord.gg/zenkai" target="_blank" rel="noopener noreferrer">Discord</a></li>
           </ul>
         </div>
 
         <div className="footer-col footer-contact-col">
           <h4>Direct Contact</h4>
           <div className="footer-contact-item">
-            <span>Email</span>
+            <span style={{ display: "block", marginBottom: "4px" }}>Email</span>
             <a href="mailto:team@zenkai.media" className="footer-link-highlight">
               team@zenkai.media
             </a>
           </div>
           <div className="footer-contact-item">
-            <span>Phone / WhatsApp</span>
+            <span style={{ display: "block", marginBottom: "4px" }}>Phone / WhatsApp</span>
             <a href="tel:+923137396135" className="footer-link-highlight">
               +92 313 7396135
             </a>
           </div>
           <div className="footer-contact-item">
-            <span>Location</span>
+            <span style={{ display: "block", marginBottom: "4px" }}>Location</span>
             <p>Pakistan · Working Worldwide</p>
           </div>
         </div>
@@ -147,7 +152,7 @@ export function SiteFooter() {
 
       <div className="footer-bottom-bar">
         <span>© 2026 Zenkai Media. All rights reserved.</span>
-        <a href="#page-top" className="back-top-link">Back to top ↑</a>
+        <a href="#top" onClick={handleBackToTop} className="back-top-link" style={{ cursor: "pointer" }}>Back to top</a>
       </div>
     </footer>
   );

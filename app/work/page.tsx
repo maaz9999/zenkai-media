@@ -7,7 +7,7 @@ import { assetItems, MediaAsset } from "../assetsData";
 import { MediaModal } from "../components/MediaModal";
 
 const BATCH_SIZE = 18;
-const WORK_TYPES = ["Reels", "Thumbnails", "Posters", "2D Design"];
+const WORK_TYPES = ["Reels", "Thumbnails", "Posters", "Arslan Ash", "4T", "2D Design"];
 
 export default function WorkPage() {
   const [activeFilter, setActiveFilter] = useState<string>("All");
@@ -22,12 +22,22 @@ export default function WorkPage() {
   }, []);
 
   const filteredAssets = assetItems.filter((item) => {
-    // Filter out software assets if any remain
     if (item.type.toLowerCase() === "software" || item.type.toLowerCase() === "web") {
       return false;
     }
-    const matchesFilter =
-      activeFilter === "All" || item.type.toLowerCase() === activeFilter.toLowerCase();
+    let matchesFilter = activeFilter === "All";
+    if (activeFilter === "Reels") matchesFilter = item.type.toLowerCase() === "reels";
+    else if (activeFilter === "Thumbnails") matchesFilter = item.type.toLowerCase() === "thumbnails";
+    else if (activeFilter === "Posters") matchesFilter = item.type.toLowerCase() === "posters";
+    else if (activeFilter === "Arslan Ash") {
+      const text = `${item.title} ${item.file} ${item.folder}`.toLowerCase();
+      matchesFilter = text.includes("arslan");
+    } else if (activeFilter === "4T") {
+      const text = `${item.title} ${item.file} ${item.folder}`.toLowerCase();
+      matchesFilter = text.includes("4t") || text.includes("4thrive");
+    } else if (activeFilter === "2D Design") matchesFilter = item.type.toLowerCase() === "2d design";
+    else matchesFilter = item.type.toLowerCase() === activeFilter.toLowerCase();
+
     const matchesSearch =
       searchQuery.trim() === "" ||
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

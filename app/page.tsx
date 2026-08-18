@@ -172,6 +172,14 @@ export default function Home() {
     if (filter === "Reels") return item.type.toLowerCase() === "reels";
     if (filter === "Thumbnails") return item.type.toLowerCase() === "thumbnails";
     if (filter === "Posters") return item.type.toLowerCase() === "posters";
+    if (filter === "Arslan Ash") {
+      const text = `${item.title} ${item.file} ${item.folder}`.toLowerCase();
+      return text.includes("arslan");
+    }
+    if (filter === "4T") {
+      const text = `${item.title} ${item.file} ${item.folder}`.toLowerCase();
+      return text.includes("4t") || text.includes("4thrive");
+    }
     if (filter === "2D Design") return item.type.toLowerCase() === "2d design";
     return item.type.toLowerCase() === filter.toLowerCase();
   });
@@ -194,7 +202,7 @@ export default function Home() {
             </a>
           ))}
         </div>
-        <a className="nav-cta" href="#contact" onClick={(e) => handleAnchorClick(e, "#contact")}>Start a project <Arrow /></a>
+        <a className="nav-cta" href="#contact" onClick={(e) => handleAnchorClick(e, "#contact")}>Start a project</a>
         <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>
           <span /><span />
         </button>
@@ -204,7 +212,7 @@ export default function Home() {
         {menuOpen && (
           <motion.div className="mobile-menu" initial={{ clipPath: "inset(0 0 100% 0)" }} animate={{ clipPath: "inset(0 0 0% 0)" }} exit={{ clipPath: "inset(0 0 100% 0)" }} transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}>
             {navItems.map(([label, href], index) => (
-              <motion.a key={label} href={href} onClick={(e) => handleAnchorClick(e, href)} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.07 + 0.12 }}>{label} <Arrow /></motion.a>
+              <motion.a key={label} href={href} onClick={(e) => handleAnchorClick(e, href)} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.07 + 0.12 }}>{label}</motion.a>
             ))}
           </motion.div>
         )}
@@ -229,16 +237,16 @@ export default function Home() {
         />
         <div className="hero-glow" aria-hidden="true" />
         <motion.div className="hero-copy" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.1 } } }}>
-          <motion.div className="eyebrow" variants={reveal}><span /> Independent Video & SMM Studio · PK / Worldwide</motion.div>
-          <motion.h1 variants={reveal}>High-Retention<br /><span>Video Edits</span> &<br />SMM Growth.</motion.h1>
+          <motion.div className="eyebrow" variants={reveal}><span /> Independent Video &amp; SMM Studio · PK / Worldwide</motion.div>
+          <motion.h1 variants={reveal}>High-Retention<br /><span>Video Edits</span> &amp;<br />SMM Growth.</motion.h1>
           <motion.div className="hero-bottom" variants={reveal} style={{ flexDirection: "column", alignItems: "flex-start", gap: "24px" }}>
             <p style={{ maxWidth: "480px", margin: 0 }}>High-impact YouTube edits, vertical Reels/Shorts, and end-to-end Social Media Management built to scale channel authority.</p>
             <div className="brandif-hero-actions" style={{ marginTop: 0 }}>
               <a href="#work" onClick={(e) => handleAnchorClick(e, "#work")} className="brandif-btn-primary">
-                Explore Portfolio <Arrow />
+                Explore Portfolio
               </a>
               <a href="#contact" onClick={(e) => handleAnchorClick(e, "#contact")} className="brandif-btn-secondary">
-                Start a Project <Arrow />
+                Start a Project
               </a>
             </div>
           </motion.div>
@@ -257,21 +265,12 @@ export default function Home() {
           <div className="stage-ring ring-one" /><div className="stage-ring ring-two" />
           <div className="stage-badge">EDIT<br /><span>REELS<br />SMM<br />GROWTH</span></div>
         </motion.div>
-
-        <div className="hero-index"><span>01</span><div><i /></div><span>05</span></div>
-      </section>
-
-      {/* Capabilities Marquee */}
-      <section className="marquee" aria-label="Zenkai Media capabilities">
-        <motion.div animate={reduceMotion ? undefined : { x: ["0%", "-50%"] }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }}>
-          {[0, 1].map((copy) => <span key={copy}>VIDEO EDITING <i>✦</i> REELS & SHORTS <i>✦</i> SMM <i>✦</i> THUMBNAILS <i>✦</i> CONTENT STRATEGY <i>✦</i> </span>)}
-        </motion.div>
       </section>
 
       {/* Services Section */}
       <section id="services" className="section services shell">
         <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal}>
-          <div><span className="kicker">WHAT WE DO</span><h2>Core Pillars.<br /><em>Maximum reach.</em></h2></div>
+          <div><span className="kicker">WHAT WE DO</span><h2>Core Pillars.<br />Maximum reach.</h2></div>
           <p>We focus 100% on high-retention video production, click-tested packaging, and strategic social channel management.</p>
         </motion.div>
         <div className="service-grid">{services.map((service) => <ServiceCard key={service.number} service={service} />)}</div>
@@ -281,9 +280,9 @@ export default function Home() {
       <section id="work" className="section work-section">
         <div className="shell">
           <motion.div className="section-heading work-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal}>
-            <div><span className="kicker">PORTFOLIO SHOWCASE</span><h2>Selected<br /><em>Works.</em></h2></div>
+            <div><span className="kicker">PORTFOLIO SHOWCASE</span><h2>Selected<br />Works.</h2></div>
             <div className="filters" role="group" aria-label="Filter projects">
-              {["All", "Reels", "Thumbnails", "Posters", "2D Design"].map((item) => (
+              {["All", "Reels", "Thumbnails", "Posters", "Arslan Ash", "4T", "2D Design"].map((item) => (
                 <button key={item} className={filter === item ? "active" : ""} onClick={() => setFilter(item)}>
                   {item === "Reels" ? "Reels & Videos" : item === "2D Design" ? "2D & Merch" : item}
                 </button>
@@ -313,18 +312,11 @@ export default function Home() {
                     )}
                     <div className="project-overlay">
                       <span>{item.type}</span>
-                      <i>{item.isVideo ? "▶" : <Arrow />}</i>
                     </div>
                   </motion.article>
                 ))}
             </AnimatePresence>
           </motion.div>
-
-          <div className="work-home-footer" style={{ marginTop: "32px", textAlign: "center" }}>
-            <p style={{ color: "rgba(255, 255, 255, 0.6)", fontSize: "14px" }}>
-              Click any project above to expand video/image preview directly.
-            </p>
-          </div>
         </div>
 
         <MediaModal
@@ -344,7 +336,7 @@ export default function Home() {
       {/* Monthly Content & SMM Packages Section */}
       <section id="packages" className="section shell" style={{ paddingTop: "100px", paddingBottom: "100px" }}>
         <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal}>
-          <div><span className="kicker">PRODUCTION SYSTEM</span><h2>Monthly<br /><em>Packages.</em></h2></div>
+          <div><span className="kicker">PRODUCTION SYSTEM</span><h2>Monthly<br />Packages.</h2></div>
           <p>Repeatable editing and SMM retainers designed to scale your channel output consistently.</p>
         </motion.div>
 
@@ -374,7 +366,6 @@ export default function Home() {
                 </ul>
                 <a href="#contact" onClick={(e) => handleAnchorClick(e, "#contact")} className="service-discuss-link">
                   <span>Select Package</span>
-                  <Arrow />
                 </a>
               </div>
             </motion.article>
@@ -382,20 +373,31 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why Zenkai Section */}
-      <section id="about" className="section about shell">
-        <motion.div className="about-orb" aria-hidden="true" animate={reduceMotion ? undefined : { rotate: 360 }} transition={{ duration: 26, repeat: Infinity, ease: "linear" }}><span>ZENKAI MEDIA · EDITING & SMM STUDIO · </span><i /></motion.div>
-        <motion.div className="about-copy" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={reveal}>
-          <span className="kicker">WHY ZENKAI</span>
-          <h2>Specialized.<br />By <em>design.</em></h2>
-          <p>No generic web fluff, no extra noise. Zenkai Media focuses exclusively on high-retention video editing and strategic social media management for creators, esports legends, and ambitious brands.</p>
-        </motion.div>
+      {/* Why Zenkai / Specialized by Design Section */}
+      <section id="about" className="section shell" style={{ paddingTop: "100px", paddingBottom: "80px" }}>
+        <motion.div className="specialized-card" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={reveal}>
+          <div className="specialized-glow-ring" aria-hidden="true" />
+          <div className="specialized-copy">
+            <span className="kicker"><span className="dot" /> SPECIALIZED BY DESIGN</span>
+            <h2>Specialized.<br />For <span>Channel Retention.</span></h2>
+            <p>Zero web bloat, zero fluff. Zenkai Media focuses exclusively on high-retention video editing, click-tested thumbnails, and end-to-end social media management for creators, esports teams, and ambitious brands.</p>
+          </div>
 
-        <div className="stats">
-          <div><strong>100%</strong><span>video editing &amp;<br />SMM focus</span></div>
-          <div><strong>10M+</strong><span>watch-time<br />impressions</span></div>
-          <div><strong>1:1</strong><span>senior editor<br />collaboration</span></div>
-        </div>
+          <div className="specialized-stats-grid">
+            <div className="spec-stat-item">
+              <strong>100%</strong>
+              <span>Video &amp; SMM Focus</span>
+            </div>
+            <div className="spec-stat-item">
+              <strong>10M+</strong>
+              <span>Watch-Time Impressions</span>
+            </div>
+            <div className="spec-stat-item">
+              <strong>1:1</strong>
+              <span>Senior Editor Access</span>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
       {/* High-Impact Bento Comparison Showcase */}
