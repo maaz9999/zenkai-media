@@ -148,7 +148,13 @@ export default function WorkPage() {
               const isVideo = item.type.toLowerCase() === "reels" || item.isVideo;
               const isPoster = item.type.toLowerCase() === "posters";
               const isThumbnail = item.type.toLowerCase() === "thumbnails";
-              const isContain = item.type === "2D Design" || item.folder.toLowerCase().includes("4thrive") || item.id.includes("merch-4thrive");
+              const isContain =
+                item.type === "2D Design" ||
+                item.folder.toLowerCase().includes("4thrive") ||
+                item.folder.toLowerCase().includes("twitch emote presentation") ||
+                item.id.includes("merch-4thrive") ||
+                item.id.includes("twitch-emote") ||
+                item.id.includes("twitch-sticker");
               const cardTypeClass = isVideo
                 ? "video-card reel-card"
                 : isPoster
