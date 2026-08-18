@@ -95,64 +95,66 @@ export function SiteFooter() {
   }
 
   return (
-    <footer className="footer shell">
-      <div className="footer-top-grid">
-        <div className="footer-brand">
-          <Logo />
-          <p className="footer-bio">
-            Independent Video Editing &amp; Social Media Management (SMM) studio. Engineering high-retention video edits, short-form reels, thumbnails, and channel growth strategies.
-          </p>
-          <div className="footer-availability">
-            <span className="dot" /> Taking on selected projects
+    <footer className="footer-wrap">
+      <div className="footer-inner shell">
+        <div className="footer-top-grid">
+          <div className="footer-brand">
+            <Logo />
+            <p className="footer-bio">
+              Independent Video Editing &amp; Social Media Management (SMM) studio. Engineering high-retention video edits, short-form reels, thumbnails, and channel growth strategies.
+            </p>
+            <div className="footer-availability">
+              <span className="dot" /> Taking on selected projects
+            </div>
+          </div>
+
+          <div className="footer-col">
+            <h4>Navigation</h4>
+            <ul>
+              <li><a href="#top" onClick={handleBackToTop}>Home</a></li>
+              <li><a href="#services">Capabilities</a></li>
+              <li><a href="#work">Portfolio Showcase</a></li>
+              <li><a href="#packages">Monthly Packages</a></li>
+              <li><a href="#about">Why Zenkai</a></li>
+              <li><a href="#contact">Contact Us</a></li>
+            </ul>
+          </div>
+
+          <div className="footer-col">
+            <h4>Social Media</h4>
+            <ul>
+              <li><a href="https://youtube.com/@zenkaimedia" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+              <li><a href="https://x.com/zenkaimedia" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
+              <li><a href="https://instagram.com/zenkai.media" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+              <li><a href="https://discord.gg/zenkai" target="_blank" rel="noopener noreferrer">Discord</a></li>
+            </ul>
+          </div>
+
+          <div className="footer-col footer-contact-col">
+            <h4>Direct Contact</h4>
+            <div className="footer-contact-item">
+              <span style={{ display: "block", marginBottom: "4px" }}>Email</span>
+              <a href="mailto:team@zenkai.media" className="footer-link-highlight">
+                team@zenkai.media
+              </a>
+            </div>
+            <div className="footer-contact-item">
+              <span style={{ display: "block", marginBottom: "4px" }}>Phone / WhatsApp</span>
+              <a href="tel:+923137396135" className="footer-link-highlight">
+                +92 313 7396135
+              </a>
+            </div>
+            <div className="footer-contact-item">
+              <span style={{ display: "block", marginBottom: "4px" }}>Location</span>
+              <p>Pakistan · Working Worldwide</p>
+            </div>
           </div>
         </div>
 
-        <div className="footer-col">
-          <h4>Navigation</h4>
-          <ul>
-            <li><a href="#top" onClick={handleBackToTop}>Home</a></li>
-            <li><a href="#services">Capabilities</a></li>
-            <li><a href="#work">Portfolio Showcase</a></li>
-            <li><a href="#packages">Monthly Packages</a></li>
-            <li><a href="#about">Why Zenkai</a></li>
-            <li><a href="#contact">Contact Us</a></li>
-          </ul>
+        <div className="footer-bottom-bar">
+          <span>© 2026 Zenkai Media. All rights reserved.</span>
+          <a href="#top" onClick={handleBackToTop} className="back-top-link" style={{ cursor: "pointer" }}>Back to top ↑</a>
         </div>
-
-        <div className="footer-col">
-          <h4>Social Media</h4>
-          <ul>
-            <li><a href="https://youtube.com/@zenkaimedia" target="_blank" rel="noopener noreferrer">YouTube</a></li>
-            <li><a href="https://x.com/zenkaimedia" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
-            <li><a href="https://instagram.com/zenkai.media" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-            <li><a href="https://discord.gg/zenkai" target="_blank" rel="noopener noreferrer">Discord</a></li>
-          </ul>
-        </div>
-
-        <div className="footer-col footer-contact-col">
-          <h4>Direct Contact</h4>
-          <div className="footer-contact-item">
-            <span style={{ display: "block", marginBottom: "4px" }}>Email</span>
-            <a href="mailto:team@zenkai.media" className="footer-link-highlight">
-              team@zenkai.media
-            </a>
-          </div>
-          <div className="footer-contact-item">
-            <span style={{ display: "block", marginBottom: "4px" }}>Phone / WhatsApp</span>
-            <a href="tel:+923137396135" className="footer-link-highlight">
-              +92 313 7396135
-            </a>
-          </div>
-          <div className="footer-contact-item">
-            <span style={{ display: "block", marginBottom: "4px" }}>Location</span>
-            <p>Pakistan · Working Worldwide</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="footer-bottom-bar">
-        <span>© 2026 Zenkai Media. All rights reserved.</span>
-        <a href="#top" onClick={handleBackToTop} className="back-top-link" style={{ cursor: "pointer" }}>Back to top</a>
       </div>
     </footer>
   );

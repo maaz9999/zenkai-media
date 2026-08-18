@@ -1004,9 +1004,23 @@ img, video { display: block; max-width: 100%; }
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 102, 0, 0.2);
 }
 
+.project-card.video-card,
+.project-card.reel-card,
 .project-card.reel-tab-card {
   aspect-ratio: 9 / 16 !important;
-  max-height: 540px;
+  max-height: 520px;
+}
+
+.project-card.poster-card {
+  aspect-ratio: 3 / 4 !important;
+}
+
+.project-card.thumbnail-card {
+  aspect-ratio: 16 / 9 !important;
+}
+
+.project-card.contain-fit {
+  aspect-ratio: 16 / 10 !important;
 }
 
 /* Uniform edge-to-edge clean layout */
@@ -3763,13 +3777,21 @@ img {
 }
 
 /* Premium Full-Width 4-Column Footer */
-.footer {
+.footer-wrap {
   width: 100%;
   padding-top: 90px;
   padding-bottom: 50px;
-  background: radial-gradient(circle at top center, rgba(18, 18, 24, 0.95) 0%, rgba(5, 5, 8, 0.98) 100%);
+  background: radial-gradient(circle at top center, rgba(18, 18, 24, 0.98) 0%, rgba(5, 5, 8, 0.99) 100%);
   border-top: 1px solid rgba(255, 102, 0, 0.3);
   position: relative;
+  overflow: hidden;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  padding-inline: clamp(24px, 4vw, 48px);
 }
 
 .footer-top-grid {
@@ -3777,24 +3799,23 @@ img {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 1.3fr;
   gap: 48px;
-  margin-bottom: 60px;
 }
 
 .footer-brand { display: flex; flex-direction: column; gap: 20px; }
-.footer-bio { color: #d4d4d8; font-size: 14px; line-height: 1.65; margin: 0; max-width: 360px; font-family: var(--font-sans), sans-serif; }
+.footer-bio { color: #d4d4d8; font-size: 14.5px; line-height: 1.65; margin: 0; max-width: 360px; font-family: var(--font-sans), sans-serif; }
 .footer-availability { display: inline-flex; align-items: center; gap: 10px; font: 10px var(--font-geist-mono), monospace; color: var(--acid); text-transform: uppercase; letter-spacing: .08em; border: 1px solid rgba(255,102,0,0.35); background: rgba(255,102,0,0.08); padding: 8px 16px; border-radius: 999px; width: max-content; }
 .footer-availability .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--acid); box-shadow: 0 0 12px var(--acid); }
 
 .footer-col h4 { color: var(--acid); font-size: 12px; font-weight: 900; margin: 0 0 22px; text-transform: uppercase; letter-spacing: .12em; font-family: var(--font-geist-mono), monospace; }
 .footer-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
-.footer-col a { color: #e4e4e7; font-size: 13.5px; transition: color .2s, transform .2s; display: inline-block; text-decoration: none; font-weight: 500; }
+.footer-col a { color: #e4e4e7; font-size: 13.5px; transition: color .2s, transform .2s; display: inline-block; text-decoration: none; font-weight: 500; font-family: var(--font-sans), sans-serif; }
 .footer-col a:hover { color: var(--acid); transform: translateX(3px); }
 
 .footer-contact-col { display: flex; flex-direction: column; gap: 20px; }
 .footer-contact-item { display: flex; flex-direction: column; gap: 4px; }
 .footer-contact-item span { font: 9px var(--font-geist-mono), monospace; text-transform: uppercase; color: #a1a1aa; letter-spacing: .09em; }
-.footer-contact-item p { margin: 0; color: #ffffff; font-size: 14px; font-weight: 600; white-space: nowrap; }
-.footer-link-highlight { color: var(--acid) !important; font-weight: 800; font-size: 14px; white-space: nowrap !important; word-break: normal !important; text-decoration: none; transition: all 0.2s ease; }
+.footer-contact-item p { margin: 0; color: #ffffff; font-size: 14px; font-weight: 600; white-space: nowrap; font-family: var(--font-sans), sans-serif; }
+.footer-link-highlight { color: var(--acid) !important; font-weight: 800; font-size: 14px; white-space: nowrap !important; word-break: normal !important; text-decoration: none; transition: all 0.2s ease; font-family: var(--font-sans), sans-serif; }
 .footer-link-highlight:hover { text-decoration: underline; color: #ff8800 !important; }
 
 .footer-bottom-bar { border-top: 1px solid rgba(255,255,255,0.12); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; color: #a1a1aa; font: 10px var(--font-geist-mono), monospace; text-transform: uppercase; letter-spacing: .08em; }

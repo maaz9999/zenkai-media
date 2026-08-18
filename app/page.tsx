@@ -189,6 +189,18 @@ export default function Home() {
     return item.type.toLowerCase() === filter.toLowerCase();
   });
 
+  const sortedFilteredAssets = [...filteredAssets].sort((a, b) => {
+    if (filter === "All") {
+      const getPriority = (item: MediaAsset) => {
+        if (item.type.toLowerCase() === "reels" || item.isVideo) return 1;
+        if (item.type.toLowerCase() === "posters") return 2;
+        return 3;
+      };
+      return getPriority(a) - getPriority(b);
+    }
+    return 0;
+  });
+
   const currentModalIndex = selectedAsset ? assetItems.findIndex((a) => a.id === selectedAsset.id) : -1;
   const hasPrev = currentModalIndex > 0;
   const hasNext = currentModalIndex >= 0 && currentModalIndex < assetItems.length - 1;
@@ -315,13 +327,25 @@ export default function Home() {
           
           <motion.div layout className="project-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
             <AnimatePresence mode="popLayout">
-              {filteredAssets
-                .slice(0, 12)
+              {sortedFilteredAssets
+                .slice(0, 15)
                 .map((item, index) => {
-                  const isReelsTab = filter === "Reels";
+                  const isVideo = item.type.toLowerCase() === "reels" || item.isVideo;
+                  const isPoster = item.type.toLowerCase() === "posters";
+                  const isThumbnail = item.type.toLowerCase() === "thumbnails";
+                  const isContain = item.type === "2D Design" || item.folder.toLowerCase().includes("4thrive") || item.id.includes("merch-4thrive");
+                  const cardTypeClass = isVideo
+                    ? "video-card reel-card"
+                    : isPoster
+                    ? "poster-card"
+                    : isThumbnail
+                    ? "thumbnail-card"
+                    : isContain
+                    ? "contain-fit"
+                    : "normal";
                   return (
                     <motion.article
-                      className={`project-card ${isReelsTab && item.isVideo ? "reel-tab-card" : ""}`}
+                      className={`project-card ${cardTypeClass}`}
                       key={item.id}
                       layout
                       initial={{ opacity: 0, scale: 0.96 }}

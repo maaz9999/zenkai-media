@@ -49,19 +49,31 @@ export default function WorkPage() {
     return matchesFilter && matchesSearch;
   });
 
-  const displayedAssets = filteredAssets.slice(0, visibleCount);
-  const hasMore = visibleCount < filteredAssets.length;
+  const sortedFilteredAssets = [...filteredAssets].sort((a, b) => {
+    if (activeFilter === "All") {
+      const getPriority = (item: MediaAsset) => {
+        if (item.type.toLowerCase() === "reels" || item.isVideo) return 1;
+        if (item.type.toLowerCase() === "posters") return 2;
+        return 3;
+      };
+      return getPriority(a) - getPriority(b);
+    }
+    return 0;
+  });
 
-  const currentModalIndex = selectedAsset ? filteredAssets.findIndex((a) => a.id === selectedAsset.id) : -1;
+  const displayedAssets = sortedFilteredAssets.slice(0, visibleCount);
+  const hasMore = visibleCount < sortedFilteredAssets.length;
+
+  const currentModalIndex = selectedAsset ? sortedFilteredAssets.findIndex((a) => a.id === selectedAsset.id) : -1;
   const hasPrev = currentModalIndex > 0;
-  const hasNext = currentModalIndex >= 0 && currentModalIndex < filteredAssets.length - 1;
+  const hasNext = currentModalIndex >= 0 && currentModalIndex < sortedFilteredAssets.length - 1;
 
   function openNext() {
-    if (hasNext) setSelectedAsset(filteredAssets[currentModalIndex + 1]);
+    if (hasNext) setSelectedAsset(sortedFilteredAssets[currentModalIndex + 1]);
   }
 
   function openPrev() {
-    if (hasPrev) setSelectedAsset(filteredAssets[currentModalIndex - 1]);
+    if (hasPrev) setSelectedAsset(sortedFilteredAssets[currentModalIndex - 1]);
   }
 
   return (
@@ -127,16 +139,28 @@ export default function WorkPage() {
         </div>
 
         <div className="catalog-meta">
-          <span>Showing {displayedAssets.length} of {filteredAssets.length} projects</span>
+          <span>Showing {displayedAssets.length} of {sortedFilteredAssets.length} projects</span>
         </div>
 
         <motion.div layout className="project-grid">
           <AnimatePresence mode="popLayout">
             {displayedAssets.map((item, index) => {
-              const isReelsTab = activeFilter === "Reels";
+              const isVideo = item.type.toLowerCase() === "reels" || item.isVideo;
+              const isPoster = item.type.toLowerCase() === "posters";
+              const isThumbnail = item.type.toLowerCase() === "thumbnails";
+              const isContain = item.type === "2D Design" || item.folder.toLowerCase().includes("4thrive") || item.id.includes("merch-4thrive");
+              const cardTypeClass = isVideo
+                ? "video-card reel-card"
+                : isPoster
+                ? "poster-card"
+                : isThumbnail
+                ? "thumbnail-card"
+                : isContain
+                ? "contain-fit"
+                : "normal";
               return (
                 <motion.article
-                  className={`project-card ${isReelsTab && item.isVideo ? "reel-tab-card" : ""}`}
+                  className={`project-card ${cardTypeClass}`}
                   key={item.id}
                   layout
                   initial={{ opacity: 0, scale: 0.95 }}
