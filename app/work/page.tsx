@@ -133,20 +133,10 @@ export default function WorkPage() {
         <motion.div layout className="project-grid">
           <AnimatePresence mode="popLayout">
             {displayedAssets.map((item, index) => {
-              const isContain = item.type === "2D Design" || item.folder.toLowerCase().includes("4thrive") || item.id.includes("merch-4thrive");
-              const typeClass =
-                item.type.toLowerCase() === "thumbnails"
-                  ? "thumbnail-card"
-                  : item.type.toLowerCase() === "reels"
-                  ? "reel-card video-card"
-                  : item.type.toLowerCase() === "posters"
-                  ? "poster-card"
-                  : item.type.toLowerCase() === "2d design"
-                  ? "merch-card"
-                  : item.size || "normal";
+              const isReelsTab = activeFilter === "Reels";
               return (
                 <motion.article
-                  className={`project-card ${typeClass} ${isContain ? "contain-fit" : ""}`}
+                  className={`project-card ${isReelsTab && item.isVideo ? "reel-tab-card" : ""}`}
                   key={item.id}
                   layout
                   initial={{ opacity: 0, scale: 0.95 }}

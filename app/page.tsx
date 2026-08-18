@@ -318,10 +318,10 @@ export default function Home() {
               {filteredAssets
                 .slice(0, 12)
                 .map((item, index) => {
-                  const isContain = item.type === "2D Design" || item.folder.toLowerCase().includes("4thrive") || item.id.includes("merch-4thrive");
+                  const isReelsTab = filter === "Reels";
                   return (
                     <motion.article
-                      className={`project-card ${item.size} ${item.isVideo ? "video-card" : ""} ${isContain ? "contain-fit" : ""}`}
+                      className={`project-card ${isReelsTab && item.isVideo ? "reel-tab-card" : ""}`}
                       key={item.id}
                       layout
                       initial={{ opacity: 0, scale: 0.96 }}
