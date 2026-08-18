@@ -33,8 +33,8 @@ export default function WorkPage() {
       const text = `${item.title} ${item.file} ${item.folder}`.toLowerCase();
       matchesFilter = text.includes("arslan");
     } else if (activeFilter === "4T") {
-      const text = `${item.title} ${item.file} ${item.folder}`.toLowerCase();
-      matchesFilter = text.includes("4t") || text.includes("4thrive");
+      const text = `${item.title} ${item.file} ${item.folder} ${item.id}`.toLowerCase();
+      matchesFilter = (text.includes("4thrive") || item.id.includes("merch-4thrive")) && item.type !== "Reels";
     } else if (activeFilter === "2D Design") matchesFilter = item.type.toLowerCase() === "2d design";
     else matchesFilter = item.type.toLowerCase() === activeFilter.toLowerCase();
 
@@ -60,12 +60,6 @@ export default function WorkPage() {
     if (hasPrev) setSelectedAsset(filteredAssets[currentModalIndex - 1]);
   }
 
-  const reelCount = assetItems.filter((a) => a.type === "Reels").length;
-  const thumbCount = assetItems.filter((a) => a.type === "Thumbnails").length;
-  const posterCount = assetItems.filter((a) => a.type === "Posters").length;
-  const design2DCount = assetItems.filter((a) => a.type === "2D Design").length;
-  const totalCount = reelCount + thumbCount + posterCount + design2DCount;
-
   return (
     <PageFrame active="Portfolio">
       <section className="route-section work-route shell">
@@ -77,46 +71,46 @@ export default function WorkPage() {
 
         <div className="work-toolbar">
           <div className="filters" role="group" aria-label="Filter portfolio work">
-            {[
-              ["All", totalCount],
-              ["Reels", reelCount],
-              ["Thumbnails", thumbCount],
-              ["Posters", posterCount],
-              ["2D Design", design2DCount],
-            ].map(([label, count]) => (
+            {["All", ...WORK_TYPES].map((item) => (
               <button
-                key={label as string}
-                className={activeFilter === label ? "active" : ""}
-                aria-pressed={activeFilter === label}
-                onClick={() => { setActiveFilter(String(label)); setVisibleCount(BATCH_SIZE); }}
+                key={item}
+                className={activeFilter === item ? "active" : ""}
+                onClick={() => {
+                  setActiveFilter(item);
+                  setVisibleCount(BATCH_SIZE);
+                }}
               >
-                {label === "Reels" ? "Reels & Videos" : label === "2D Design" ? "Graphics & Merch" : (label as string)} ({count})
+                {item === "Reels" ? "Reels & Videos" : item === "2D Design" ? "2D & Merch" : item}
               </button>
             ))}
           </div>
 
-          <div className="search-box">
+          <div className="search-bar">
             <input
               type="text"
-              placeholder="Search video edits & graphics..."
+              placeholder="Search work..."
               value={searchQuery}
-              onChange={(e) => { setSearchQuery(e.target.value); setVisibleCount(BATCH_SIZE); }}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setVisibleCount(BATCH_SIZE);
+              }}
             />
             {searchQuery && (
-              <button className="clear-search" onClick={() => setSearchQuery("")}>
+              <button onClick={() => setSearchQuery("")} aria-label="Clear search">
                 ✕
               </button>
             )}
           </div>
         </div>
 
-        <div className="asset-counter" style={{ margin: "24px 0" }}>
-          Showing <span>{displayedAssets.length}</span> of <span>{filteredAssets.length}</span> items
+        <div className="catalog-meta">
+          <span>Showing {displayedAssets.length} of {filteredAssets.length} projects</span>
         </div>
 
         <motion.div layout className="project-grid">
           <AnimatePresence mode="popLayout">
             {displayedAssets.map((item, index) => {
+              const isContain = item.type === "2D Design" || item.folder.toLowerCase().includes("4thrive") || item.id.includes("merch-4thrive");
               const typeClass =
                 item.type.toLowerCase() === "thumbnails"
                   ? "thumbnail-card"
@@ -129,7 +123,7 @@ export default function WorkPage() {
                   : item.size || "normal";
               return (
                 <motion.article
-                  className={`project-card ${typeClass}`}
+                  className={`project-card ${typeClass} ${isContain ? "contain-fit" : ""}`}
                   key={item.id}
                   layout
                   initial={{ opacity: 0, scale: 0.95 }}

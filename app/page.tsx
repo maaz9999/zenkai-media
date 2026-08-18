@@ -177,8 +177,8 @@ export default function Home() {
       return text.includes("arslan");
     }
     if (filter === "4T") {
-      const text = `${item.title} ${item.file} ${item.folder}`.toLowerCase();
-      return text.includes("4t") || text.includes("4thrive");
+      const text = `${item.title} ${item.file} ${item.folder} ${item.id}`.toLowerCase();
+      return (text.includes("4thrive") || item.id.includes("merch-4thrive")) && item.type !== "Reels";
     }
     if (filter === "2D Design") return item.type.toLowerCase() === "2d design";
     return item.type.toLowerCase() === filter.toLowerCase();
@@ -294,27 +294,30 @@ export default function Home() {
             <AnimatePresence mode="popLayout">
               {filteredAssets
                 .slice(0, 12)
-                .map((item, index) => (
-                  <motion.article
-                    className={`project-card ${item.size} ${item.isVideo ? "video-card" : ""}`}
-                    key={item.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.96 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.94 }}
-                    transition={{ duration: 0.45, delay: index * 0.04 }}
-                    onClick={() => setSelectedAsset(item)}
-                  >
-                    {item.isVideo ? (
-                      <AutoplayVideo src={item.src} ariaLabel={`${item.title} video project`} />
-                    ) : (
-                      <img src={item.src} alt={`${item.title} project by Zenkai Media`} loading="lazy" />
-                    )}
-                    <div className="project-overlay">
-                      <span>{item.type}</span>
-                    </div>
-                  </motion.article>
-                ))}
+                .map((item, index) => {
+                  const isContain = item.type === "2D Design" || item.folder.toLowerCase().includes("4thrive") || item.id.includes("merch-4thrive");
+                  return (
+                    <motion.article
+                      className={`project-card ${item.size} ${item.isVideo ? "video-card" : ""} ${isContain ? "contain-fit" : ""}`}
+                      key={item.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.96 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.94 }}
+                      transition={{ duration: 0.45, delay: index * 0.04 }}
+                      onClick={() => setSelectedAsset(item)}
+                    >
+                      {item.isVideo ? (
+                        <AutoplayVideo src={item.src} ariaLabel={`${item.title} video project`} />
+                      ) : (
+                        <img src={item.src} alt={`${item.title} project by Zenkai Media`} loading="lazy" />
+                      )}
+                      <div className="project-overlay">
+                        <span>{item.type}</span>
+                      </div>
+                    </motion.article>
+                  );
+                })}
             </AnimatePresence>
           </motion.div>
         </div>
