@@ -1262,11 +1262,51 @@ export const assetItems: MediaAsset[] = [
   },
   {
     "id": "twitch-emote-8",
-    "title": "Twitch Emote Suite - Stream Overlay Frame 8",
+    "title": "Arslan Ash Custom Twitch Emote Pack - Frame 8 Thankyou",
     "type": "2D Design",
     "folder": "Twitch emote presentation",
     "file": "Frame 8.jpg",
     "src": "/Assets/Twitch emote presentation/Frame 8.jpg",
+    "isVideo": false,
+    "size": "normal"
+  },
+  {
+    "id": "twitch-sticker-1",
+    "title": "Arslan Ash Custom Twitch Sticker 1",
+    "type": "2D Design",
+    "folder": "Twitch emote presentation",
+    "file": "Twitch sticker 1.png",
+    "src": "/Assets/Twitch emote presentation/Stickers/Twitch%20sticker%201.png",
+    "isVideo": false,
+    "size": "normal"
+  },
+  {
+    "id": "twitch-sticker-2",
+    "title": "Arslan Ash Custom Twitch Sticker 2",
+    "type": "2D Design",
+    "folder": "Twitch emote presentation",
+    "file": "Twitch sticker 2.png",
+    "src": "/Assets/Twitch emote presentation/Stickers/Twitch%20sticker%202.png",
+    "isVideo": false,
+    "size": "normal"
+  },
+  {
+    "id": "twitch-sticker-3",
+    "title": "Arslan Ash Custom Twitch Sticker 3",
+    "type": "2D Design",
+    "folder": "Twitch emote presentation",
+    "file": "Twitch sticker 3.png",
+    "src": "/Assets/Twitch emote presentation/Stickers/Twitch%20sticker%203.png",
+    "isVideo": false,
+    "size": "normal"
+  },
+  {
+    "id": "twitch-sticker-4",
+    "title": "Arslan Ash Custom Twitch Sticker 4",
+    "type": "2D Design",
+    "folder": "Twitch emote presentation",
+    "file": "Twitch sticker 4.png",
+    "src": "/Assets/Twitch emote presentation/Stickers/Twitch%20sticker%204.png",
     "isVideo": false,
     "size": "normal"
   }

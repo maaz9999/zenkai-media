@@ -98,6 +98,7 @@ function ServiceCard({ service }: { service: (typeof services)[number] }) {
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [filter, setFilter] = useState("All");
+  const [subFilter2D, setSubFilter2D] = useState<"4THRIVE" | "ARSLAN ASH">("4THRIVE");
   const [selectedAsset, setSelectedAsset] = useState<MediaAsset | null>(null);
   const [sent, setSent] = useState(false);
   const [formReady, setFormReady] = useState(false);
@@ -172,15 +173,19 @@ export default function Home() {
     if (filter === "Reels") return item.type.toLowerCase() === "reels";
     if (filter === "Thumbnails") return item.type.toLowerCase() === "thumbnails";
     if (filter === "Posters") return item.type.toLowerCase() === "posters";
+
     if (filter === "Arslan Ash") {
-      const text = `${item.title} ${item.file} ${item.folder}`.toLowerCase();
-      return text.includes("arslan");
+      return item.folder.toLowerCase().includes("twitch emote presentation") || item.id.includes("twitch-emote") || item.id.includes("twitch-sticker");
     }
     if (filter === "4T") {
-      const text = `${item.title} ${item.file} ${item.folder} ${item.id}`.toLowerCase();
-      return (text.includes("4thrive") || item.id.includes("merch-4thrive")) && item.type !== "Reels";
+      return (item.folder.toLowerCase().includes("4thrive") || item.id.includes("merch-4thrive")) && item.type !== "Reels";
     }
-    if (filter === "2D Design") return item.type.toLowerCase() === "2d design";
+    if (filter === "2D Design" || filter === "2D & Art") {
+      if (subFilter2D === "ARSLAN ASH") {
+        return item.folder.toLowerCase().includes("twitch emote presentation") || item.id.includes("twitch-emote") || item.id.includes("twitch-sticker");
+      }
+      return (item.folder.toLowerCase().includes("4thrive") || item.id.includes("merch-4thrive")) && item.type !== "Reels";
+    }
     return item.type.toLowerCase() === filter.toLowerCase();
   });
 
@@ -281,12 +286,30 @@ export default function Home() {
         <div className="shell">
           <motion.div className="section-heading work-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal}>
             <div><span className="kicker">PORTFOLIO SHOWCASE</span><h2>Selected<br />Works.</h2></div>
-            <div className="filters" role="group" aria-label="Filter projects">
-              {["All", "Reels", "Thumbnails", "Posters", "Arslan Ash", "4T", "2D Design"].map((item) => (
-                <button key={item} className={filter === item ? "active" : ""} onClick={() => setFilter(item)}>
-                  {item === "Reels" ? "Reels & Videos" : item === "2D Design" ? "2D & Merch" : item}
-                </button>
-              ))}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+              <div className="filters" role="group" aria-label="Filter projects">
+                {["All", "Reels", "Thumbnails", "Posters", "2D & Art"].map((item) => (
+                  <button key={item} className={filter === item || (filter === "2D Design" && item === "2D & Art") ? "active" : ""} onClick={() => setFilter(item)}>
+                    {item === "Reels" ? "Reels & Videos" : item}
+                  </button>
+                ))}
+              </div>
+              {(filter === "2D Design" || filter === "2D & Art") && (
+                <div className="sub-filters" role="group" aria-label="2D Art categories">
+                  <button
+                    className={subFilter2D === "4THRIVE" ? "sub-active" : "sub-btn"}
+                    onClick={() => setSubFilter2D("4THRIVE")}
+                  >
+                    4THRIVE
+                  </button>
+                  <button
+                    className={subFilter2D === "ARSLAN ASH" ? "sub-active" : "sub-btn"}
+                    onClick={() => setSubFilter2D("ARSLAN ASH")}
+                  >
+                    ARSLAN ASH
+                  </button>
+                </div>
+              )}
             </div>
           </motion.div>
           

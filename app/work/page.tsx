@@ -7,10 +7,11 @@ import { assetItems, MediaAsset } from "../assetsData";
 import { MediaModal } from "../components/MediaModal";
 
 const BATCH_SIZE = 18;
-const WORK_TYPES = ["Reels", "Thumbnails", "Posters", "Arslan Ash", "4T", "2D Design"];
+const WORK_TYPES = ["Reels", "Thumbnails", "Posters", "2D & Art"];
 
 export default function WorkPage() {
   const [activeFilter, setActiveFilter] = useState<string>("All");
+  const [subFilter2D, setSubFilter2D] = useState<"4THRIVE" | "ARSLAN ASH">("4THRIVE");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [visibleCount, setVisibleCount] = useState<number>(BATCH_SIZE);
   const [selectedAsset, setSelectedAsset] = useState<MediaAsset | null>(null);
@@ -30,13 +31,16 @@ export default function WorkPage() {
     else if (activeFilter === "Thumbnails") matchesFilter = item.type.toLowerCase() === "thumbnails";
     else if (activeFilter === "Posters") matchesFilter = item.type.toLowerCase() === "posters";
     else if (activeFilter === "Arslan Ash") {
-      const text = `${item.title} ${item.file} ${item.folder}`.toLowerCase();
-      matchesFilter = text.includes("arslan");
+      matchesFilter = item.folder.toLowerCase().includes("twitch emote presentation") || item.id.includes("twitch-emote") || item.id.includes("twitch-sticker");
     } else if (activeFilter === "4T") {
-      const text = `${item.title} ${item.file} ${item.folder} ${item.id}`.toLowerCase();
-      matchesFilter = (text.includes("4thrive") || item.id.includes("merch-4thrive")) && item.type !== "Reels";
-    } else if (activeFilter === "2D Design") matchesFilter = item.type.toLowerCase() === "2d design";
-    else matchesFilter = item.type.toLowerCase() === activeFilter.toLowerCase();
+      matchesFilter = (item.folder.toLowerCase().includes("4thrive") || item.id.includes("merch-4thrive")) && item.type !== "Reels";
+    } else if (activeFilter === "2D Design" || activeFilter === "2D & Art") {
+      if (subFilter2D === "ARSLAN ASH") {
+        matchesFilter = item.folder.toLowerCase().includes("twitch emote presentation") || item.id.includes("twitch-emote") || item.id.includes("twitch-sticker");
+      } else {
+        matchesFilter = (item.folder.toLowerCase().includes("4thrive") || item.id.includes("merch-4thrive")) && item.type !== "Reels";
+      }
+    } else matchesFilter = item.type.toLowerCase() === activeFilter.toLowerCase();
 
     const matchesSearch =
       searchQuery.trim() === "" ||
@@ -70,19 +74,38 @@ export default function WorkPage() {
         </div>
 
         <div className="work-toolbar">
-          <div className="filters" role="group" aria-label="Filter portfolio work">
-            {["All", ...WORK_TYPES].map((item) => (
-              <button
-                key={item}
-                className={activeFilter === item ? "active" : ""}
-                onClick={() => {
-                  setActiveFilter(item);
-                  setVisibleCount(BATCH_SIZE);
-                }}
-              >
-                {item === "Reels" ? "Reels & Videos" : item === "2D Design" ? "2D & Merch" : item}
-              </button>
-            ))}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+            <div className="filters" role="group" aria-label="Filter portfolio work">
+              {["All", ...WORK_TYPES].map((item) => (
+                <button
+                  key={item}
+                  className={activeFilter === item || (activeFilter === "2D Design" && item === "2D & Art") ? "active" : ""}
+                  onClick={() => {
+                    setActiveFilter(item);
+                    setVisibleCount(BATCH_SIZE);
+                  }}
+                >
+                  {item === "Reels" ? "Reels & Videos" : item}
+                </button>
+              ))}
+            </div>
+
+            {(activeFilter === "2D Design" || activeFilter === "2D & Art") && (
+              <div className="sub-filters" role="group" aria-label="2D Art categories">
+                <button
+                  className={subFilter2D === "4THRIVE" ? "sub-active" : "sub-btn"}
+                  onClick={() => setSubFilter2D("4THRIVE")}
+                >
+                  4THRIVE
+                </button>
+                <button
+                  className={subFilter2D === "ARSLAN ASH" ? "sub-active" : "sub-btn"}
+                  onClick={() => setSubFilter2D("ARSLAN ASH")}
+                >
+                  ARSLAN ASH
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="search-bar">
