@@ -430,7 +430,12 @@ export default function Home() {
           <div className="specialized-copy">
             <span className="kicker"><span className="dot" /> SPECIALIZED BY DESIGN</span>
             <h2>Specialized.<br />For <span>Channel Retention.</span></h2>
-            <p>Zero web bloat, zero fluff. Zenkai Media focuses exclusively on high-retention video editing, click-tested thumbnails, and end-to-end social media management for creators, esports teams, and ambitious brands.</p>
+            <p>Zero web bloat, zero fluff. Zenkai Media focuses exclusively on high-retention video editing, click-tested packaging, and end-to-end social media management for creators, esports teams, and ambitious brands.</p>
+            <div style={{ marginTop: "24px" }}>
+              <a href="#services" onClick={(e) => handleAnchorClick(e, "#services")} className="brandif-btn-primary">
+                Explore Core Pillars
+              </a>
+            </div>
           </div>
 
           <div className="specialized-stats-grid">
