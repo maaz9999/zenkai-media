@@ -3851,6 +3851,29 @@ img {
 .footer-col a { color: #e4e4e7; font-size: 13.5px; transition: color .2s, transform .2s; display: inline-block; text-decoration: none; font-weight: 500; font-family: var(--font-sans), sans-serif; }
 .footer-col a:hover { color: var(--acid); transform: translateX(3px); }
 
+.footer-social-link {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 10px;
+  color: #e4e4e7 !important;
+  transition: all 0.25s ease !important;
+}
+
+.footer-social-link svg {
+  color: var(--acid);
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.footer-social-link:hover {
+  color: var(--acid) !important;
+  transform: translateX(4px) !important;
+}
+
+.footer-social-link:hover svg {
+  transform: scale(1.18);
+  filter: drop-shadow(0 0 8px rgba(255, 102, 0, 0.6));
+}
+
 .footer-contact-col { display: flex; flex-direction: column; gap: 20px; }
 .footer-contact-item { display: flex; flex-direction: column; gap: 4px; }
 .footer-contact-item span { font: 9px var(--font-geist-mono), monospace; text-transform: uppercase; color: #a1a1aa; letter-spacing: .09em; }
