@@ -23,14 +23,14 @@ export default function ServicesPage() {
       return [
         assetItems.find((a) => a.id === "reels-1"),
         assetItems.find((a) => a.id === "reels-7"),
-        assetItems.find((a) => a.id === "reels-3"),
+        assetItems.find((a) => a.id === "reels-6"),
       ].filter(Boolean) as MediaAsset[];
     }
     if (titleLower.includes("social") || titleLower.includes("management")) {
       return [
         assetItems.find((a) => a.id === "reel-growth-creative"),
-        assetItems.find((a) => a.id === "reel-v2"),
-        assetItems.find((a) => a.id === "reel-v3"),
+        assetItems.find((a) => a.id === "reels-5"),
+        assetItems.find((a) => a.id === "reels-10"),
       ].filter(Boolean) as MediaAsset[];
     }
     if (titleLower.includes("thumbnail")) {
@@ -39,7 +39,7 @@ export default function ServicesPage() {
     if (titleLower.includes("growth")) {
       return [
         assetItems.find((a) => a.id === "reel-growth-creative"),
-        assetItems.find((a) => a.id === "reel-v2"),
+        assetItems.find((a) => a.id === "reels-2"),
       ].filter(Boolean) as MediaAsset[];
     }
     return assetItems.filter((a) => a.type.toLowerCase() === "posters" && a.id !== "posters-4").slice(0, 4);

@@ -114,7 +114,6 @@ export function SiteFooter() {
               <li><a href="#top" onClick={handleBackToTop}>Home</a></li>
               <li><a href="#services">Capabilities</a></li>
               <li><a href="#work">Portfolio Showcase</a></li>
-              <li><a href="#packages">Monthly Packages</a></li>
               <li><a href="#about">Why Zenkai</a></li>
               <li><a href="#contact">Contact Us</a></li>
             </ul>
@@ -225,28 +224,18 @@ export function PageHero({
       {videoSrc && (
         <div className="hero-bg-video-container">
           {mobileVideoSrc ? (
-            <>
-              <video
-                src={videoSrc}
-                poster={posterSrc}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                className="hero-bg-video-element desktop-only-video"
-              />
-              <video
-                src={mobileVideoSrc}
-                poster={posterSrc}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                className="hero-bg-video-element mobile-only-video"
-              />
-            </>
+            <video
+              poster={posterSrc}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              className="hero-bg-video-element"
+            >
+              <source src={videoSrc} media="(min-width: 769px)" type="video/mp4" />
+              <source src={mobileVideoSrc} media="(max-width: 768px)" type="video/mp4" />
+            </video>
           ) : (
             <video
               src={videoSrc}
@@ -255,7 +244,7 @@ export function PageHero({
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
               className="hero-bg-video-element"
             />
           )}
@@ -335,19 +324,22 @@ export function AutoplayVideo({
   className,
   ariaLabel,
   eager = false,
+  preload = "metadata",
 }: {
   src: string;
   poster?: string;
   className?: string;
   ariaLabel?: string;
   eager?: boolean;
+  preload?: "auto" | "metadata";
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [srcSet, setSrcSet] = useState(eager);
 
-  // Step 1: Preload video early (600px lookahead margin)
+  // Attach the source shortly before a card reaches the viewport. A small
+  // lookahead keeps the next row responsive without downloading the whole grid.
   useEffect(() => {
     if (eager) {
       setSrcSet(true);
@@ -362,7 +354,7 @@ export function AutoplayVideo({
           srcObserver.disconnect();
         }
       },
-      { rootMargin: "600px" }
+      { rootMargin: "180px" }
     );
     srcObserver.observe(wrap);
     return () => srcObserver.disconnect();
@@ -405,11 +397,13 @@ export function AutoplayVideo({
           ref={videoRef}
           src={src}
           poster={poster}
-          autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          preload={preload}
+          onLoadedMetadata={(event) => {
+            if (event.currentTarget.currentTime === 0) event.currentTarget.currentTime = 0.08;
+          }}
           onLoadedData={() => setIsLoaded(true)}
           onCanPlay={() => setIsLoaded(true)}
           onPlay={() => setIsLoaded(true)}

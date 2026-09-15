@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Arrow, PageFrame, AutoplayVideo } from "../components/PageShell";
 import { assetItems, MediaAsset } from "../assetsData";
 import { MediaModal } from "../components/MediaModal";
+import { ArtCollectionSwitcher } from "../components/ArtCollectionSwitcher";
 
 const BATCH_SIZE = 18;
 const WORK_TYPES = ["Reels", "Thumbnails", "Posters", "2D & Art"];
@@ -61,8 +62,11 @@ export default function WorkPage() {
     return 0;
   });
 
-  const displayedAssets = sortedFilteredAssets.slice(0, visibleCount);
-  const hasMore = visibleCount < sortedFilteredAssets.length;
+  const isCompleteCategory = activeFilter === "Thumbnails" || activeFilter === "Reels";
+  const displayedAssets = isCompleteCategory
+    ? sortedFilteredAssets
+    : sortedFilteredAssets.slice(0, visibleCount);
+  const hasMore = !isCompleteCategory && visibleCount < sortedFilteredAssets.length;
 
   const currentModalIndex = selectedAsset ? sortedFilteredAssets.findIndex((a) => a.id === selectedAsset.id) : -1;
   const hasPrev = currentModalIndex > 0;
@@ -103,20 +107,7 @@ export default function WorkPage() {
             </div>
 
             {(activeFilter === "2D Design" || activeFilter === "2D & Art") && (
-              <div className="sub-filters" role="group" aria-label="2D Art categories">
-                <button
-                  className={subFilter2D === "4THRIVE" ? "sub-active" : "sub-btn"}
-                  onClick={() => setSubFilter2D("4THRIVE")}
-                >
-                  4THRIVE
-                </button>
-                <button
-                  className={subFilter2D === "ARSLAN ASH" ? "sub-active" : "sub-btn"}
-                  onClick={() => setSubFilter2D("ARSLAN ASH")}
-                >
-                  ARSLAN ASH
-                </button>
-              </div>
+              <ArtCollectionSwitcher value={subFilter2D} onChange={setSubFilter2D} />
             )}
           </div>
 
@@ -176,7 +167,12 @@ export default function WorkPage() {
                   onClick={() => setSelectedAsset(item)}
                 >
                   {item.isVideo ? (
-                    <AutoplayVideo src={item.src} ariaLabel={item.title} />
+                    <AutoplayVideo
+                      src={item.src}
+                      ariaLabel={item.title}
+                      eager
+                      preload={index < 4 ? "auto" : "metadata"}
+                    />
                   ) : (
                     <img src={item.src} alt={item.title} loading="lazy" />
                   )}

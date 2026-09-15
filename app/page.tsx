@@ -9,9 +9,10 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import { products, services } from "./content";
+import { services } from "./content";
 import { assetItems, MediaAsset } from "./assetsData";
 import { MediaModal } from "./components/MediaModal";
+import { ArtCollectionSwitcher } from "./components/ArtCollectionSwitcher";
 import { CustomDropdown } from "./components/CustomDropdown";
 import { SiteFooter, AutoplayVideo } from "./components/PageShell";
 import LightRays from "./components/LightRays";
@@ -20,7 +21,6 @@ const navItems = [
   ["Home", "#top"],
   ["Services", "#services"],
   ["Portfolio", "#work"],
-  ["Packages", "#packages"],
   ["Why Zenkai", "#about"],
   ["Contact", "#contact"],
 ];
@@ -44,49 +44,30 @@ function Arrow() {
 }
 
 function ServiceCard({ service }: { service: (typeof services)[number] }) {
-  const reduceMotion = useReducedMotion();
-  const rx = useMotionValue(0);
-  const ry = useMotionValue(0);
-  const rotateX = useSpring(rx, { stiffness: 180, damping: 22 });
-  const rotateY = useSpring(ry, { stiffness: 180, damping: 22 });
-
-  function tilt(event: MouseEvent<HTMLElement>) {
-    if (reduceMotion) return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width;
-    const y = (event.clientY - rect.top) / rect.height;
-    event.currentTarget.style.setProperty("--mx", `${x * 100}%`);
-    event.currentTarget.style.setProperty("--my", `${y * 100}%`);
-    ry.set((x - 0.5) * 5);
-    rx.set(-(y - 0.5) * 5);
-  }
-
   return (
     <motion.article
-      className="service-card plain-service-card"
+      className="service-card service-rail-card"
       data-number={service.number}
-      style={{ rotateX, rotateY, "--accent": service.color } as React.CSSProperties}
-      onMouseMove={tilt}
-      onMouseLeave={() => { rx.set(0); ry.set(0); }}
-      whileHover={{ y: -6 }}
+      style={{ "--accent": service.color } as React.CSSProperties}
+      whileHover={{ y: -3 }}
       transition={{ duration: 0.25 }}
     >
-      <div className="service-top">
-        <span>ZENKAI / {service.number}</span>
-        <span>{service.tag}</span>
-        <i>AVAILABLE</i>
+      <div className="service-rail-marker">
+        <span>{service.number}</span>
+        <i><b aria-hidden="true" /> AVAILABLE</i>
       </div>
-      <div className="service-copy">
+      <div className="service-rail-copy">
+        <span className="service-rail-tag">{service.tag}</span>
         <h3>{service.title}</h3>
         <p>{service.description}</p>
       </div>
-      <div className="service-footer">
-        <ul>
+      <div className="service-rail-aside">
+        <ul className="service-rail-list">
           {service.deliverables.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
-        <a href="#contact" className="service-discuss-link" aria-label={`Start a ${service.title} project`}>
+        <a href="#contact" className="service-rail-cta" aria-label={`Start a ${service.title} project`}>
           <span>Inquire Service</span>
           <Arrow />
         </a>
@@ -201,9 +182,13 @@ export default function Home() {
     return 0;
   });
 
-  const currentModalIndex = selectedAsset ? assetItems.findIndex((a) => a.id === selectedAsset.id) : -1;
+  const displayedAssets = filter === "Thumbnails"
+    ? sortedFilteredAssets
+    : sortedFilteredAssets.slice(0, 15);
+
+  const currentModalIndex = selectedAsset ? sortedFilteredAssets.findIndex((a) => a.id === selectedAsset.id) : -1;
   const hasPrev = currentModalIndex > 0;
-  const hasNext = currentModalIndex >= 0 && currentModalIndex < assetItems.length - 1;
+  const hasNext = currentModalIndex >= 0 && currentModalIndex < sortedFilteredAssets.length - 1;
 
   return (
     <main id="top">
@@ -277,7 +262,7 @@ export default function Home() {
             <img src="/Assets/POSTERS/jonn.jpg" alt="Why I Fear Veera Malik poster by Zenkai Media" />
           </motion.div>
           <motion.div className="stage-card stage-small" animate={reduceMotion ? undefined : { y: [0, 10, 0], rotate: [8, 5, 8] }} transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}>
-            <video src="/Assets/REELS/Ashes reel.mp4" autoPlay muted loop playsInline aria-label="Short-form video edit by Zenkai Media" />
+            <video src="/media/reel-ashes.mp4" autoPlay muted loop playsInline preload="metadata" aria-label="Short-form video edit by Zenkai Media" />
           </motion.div>
           <div className="stage-ring ring-one" /><div className="stage-ring ring-two" />
           <div className="stage-badge">EDIT<br /><span>REELS<br />SMM<br />GROWTH</span></div>
@@ -307,29 +292,14 @@ export default function Home() {
                 ))}
               </div>
               {(filter === "2D Design" || filter === "2D & Art") && (
-                <div className="sub-filters" role="group" aria-label="2D Art categories">
-                  <button
-                    className={subFilter2D === "4THRIVE" ? "sub-active" : "sub-btn"}
-                    onClick={() => setSubFilter2D("4THRIVE")}
-                  >
-                    4THRIVE
-                  </button>
-                  <button
-                    className={subFilter2D === "ARSLAN ASH" ? "sub-active" : "sub-btn"}
-                    onClick={() => setSubFilter2D("ARSLAN ASH")}
-                  >
-                    ARSLAN ASH
-                  </button>
-                </div>
+                <ArtCollectionSwitcher value={subFilter2D} onChange={setSubFilter2D} />
               )}
             </div>
           </motion.div>
           
           <motion.div layout className="project-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
             <AnimatePresence mode="popLayout">
-              {sortedFilteredAssets
-                .slice(0, 15)
-                .map((item, index) => {
+              {displayedAssets.map((item, index) => {
                   const isVideo = item.type.toLowerCase() === "reels" || item.isVideo;
                   const isPoster = item.type.toLowerCase() === "posters";
                   const isThumbnail = item.type.toLowerCase() === "thumbnails";
@@ -361,7 +331,12 @@ export default function Home() {
                       onClick={() => setSelectedAsset(item)}
                     >
                       {item.isVideo ? (
-                        <AutoplayVideo src={item.src} ariaLabel={`${item.title} video project`} />
+                        <AutoplayVideo
+                          src={item.src}
+                          ariaLabel={`${item.title} video project`}
+                          eager
+                          preload={index < 4 ? "auto" : "metadata"}
+                        />
                       ) : (
                         <img src={item.src} alt={`${item.title} project by Zenkai Media`} loading="lazy" />
                       )}
@@ -379,54 +354,14 @@ export default function Home() {
           asset={selectedAsset}
           onClose={() => setSelectedAsset(null)}
           onPrev={() => {
-            if (hasPrev) setSelectedAsset(assetItems[currentModalIndex - 1]);
+            if (hasPrev) setSelectedAsset(sortedFilteredAssets[currentModalIndex - 1]);
           }}
           onNext={() => {
-            if (hasNext) setSelectedAsset(assetItems[currentModalIndex + 1]);
+            if (hasNext) setSelectedAsset(sortedFilteredAssets[currentModalIndex + 1]);
           }}
           hasPrev={hasPrev}
           hasNext={hasNext}
         />
-      </section>
-
-      {/* Monthly Content & SMM Packages Section */}
-      <section id="packages" className="section shell" style={{ paddingTop: "100px", paddingBottom: "100px" }}>
-        <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal}>
-          <div><span className="kicker">PRODUCTION SYSTEM</span><h2>Monthly<br />Packages.</h2></div>
-          <p>Repeatable editing and SMM retainers designed to scale your channel output consistently.</p>
-        </motion.div>
-
-        <div className="service-grid">
-          {products.map((prod) => (
-            <motion.article
-              key={prod.code}
-              className="service-card plain-service-card"
-              style={{ "--accent": prod.accent, gridColumn: "span 6 !important" } as React.CSSProperties}
-              whileHover={{ y: -6 }}
-              transition={{ duration: 0.25 }}
-            >
-              <div className="service-top">
-                <span>{prod.code}</span>
-                <span>{prod.label}</span>
-                <i>RETAINER</i>
-              </div>
-              <div className="service-copy">
-                <h3>{prod.name}</h3>
-                <p>{prod.description}</p>
-              </div>
-              <div className="service-footer">
-                <ul>
-                  {prod.includes.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-                <a href="#contact" onClick={(e) => handleAnchorClick(e, "#contact")} className="service-discuss-link">
-                  <span>Select Package</span>
-                </a>
-              </div>
-            </motion.article>
-          ))}
-        </div>
       </section>
 
       {/* Why Zenkai / Specialized by Design Section */}
@@ -511,9 +446,9 @@ export default function Home() {
               </div>
             </div>
 
-            <div style={{ paddingTop: "20px", borderTop: "1px solid rgba(255, 102, 0, 0.2)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
-              <span style={{ font: "10px var(--font-geist-mono), monospace", color: "var(--acid)", letterSpacing: "0.1em", textTransform: "uppercase" }}>✦ 100% RETENTION GUARANTEE</span>
-              <a href="#contact" onClick={(e) => handleAnchorClick(e, "#contact")} className="brandif-btn-primary" style={{ padding: "10px 20px", fontSize: "13px" }}>
+            <div className="bento-card-footer">
+              <span className="retention-note">✦ 100% RETENTION GUARANTEE</span>
+              <a href="#contact" onClick={(e) => handleAnchorClick(e, "#contact")} className="comparison-cta">
                 Start Studio Partnership <Arrow />
               </a>
             </div>

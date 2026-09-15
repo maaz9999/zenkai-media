@@ -32,26 +32,6 @@ export function getDisplayTitle(item: { title?: string; type?: string }): string
 
 export const assetItems: MediaAsset[] = [
   {
-    "id": "reel-v2",
-    "title": "Short-Form Video V2 Showcase",
-    "type": "Reels",
-    "folder": "REELS",
-    "file": "v2.mp4",
-    "src": "/Assets/REELS/v2.mp4",
-    "isVideo": true,
-    "size": "normal"
-  },
-  {
-    "id": "reel-v3",
-    "title": "Custom Software V3 Showcase",
-    "type": "Reels",
-    "folder": "REELS",
-    "file": "v3.mp4",
-    "src": "/Assets/REELS/v3.mp4",
-    "isVideo": true,
-    "size": "normal"
-  },
-  {
     "id": "reel-growth-creative",
     "title": "Growth Creative Showcase",
     "type": "Reels",
@@ -225,16 +205,6 @@ export const assetItems: MediaAsset[] = [
     "size": "normal"
   },
   {
-    "id": "reels-3",
-    "title": "Ashes Reel",
-    "type": "Reels",
-    "folder": "REELS",
-    "file": "Ashes reel.mp4",
-    "src": "/Assets/REELS/Ashes%20reel.mp4",
-    "isVideo": true,
-    "size": "normal"
-  },
-  {
     "id": "reels-4",
     "title": "Danyal Mirza",
     "type": "Reels",
@@ -275,16 +245,6 @@ export const assetItems: MediaAsset[] = [
     "size": "normal"
   },
   {
-    "id": "reels-8",
-    "title": "Reel 15",
-    "type": "Reels",
-    "folder": "REELS",
-    "file": "Reel 15.mp4",
-    "src": "/Assets/REELS/Reel%2015.mp4",
-    "isVideo": true,
-    "size": "normal"
-  },
-  {
     "id": "reels-9",
     "title": "Reel",
     "type": "Reels",
@@ -303,16 +263,6 @@ export const assetItems: MediaAsset[] = [
     "src": "/Assets/REELS/teach%20me%20jun1.mp4",
     "isVideo": true,
     "size": "normal"
-  },
-  {
-    "id": "reels-11",
-    "title": "Translate",
-    "type": "Reels",
-    "folder": "REELS",
-    "file": "Translate.mp4",
-    "src": "/Assets/REELS/Translate.mp4",
-    "isVideo": true,
-    "size": "wide"
   },
   {
     "id": "thumbnails-1",
@@ -795,16 +745,6 @@ export const assetItems: MediaAsset[] = [
     "size": "normal"
   },
   {
-    "id": "thumbnails-49",
-    "title": "IMG 6975",
-    "type": "Thumbnails",
-    "folder": "Thumbnails",
-    "file": "IMG_6975(1).JPG",
-    "src": "/Assets/Thumbnails/IMG_6975(1).JPG",
-    "isVideo": false,
-    "size": "normal"
-  },
-  {
     "id": "thumbnails-50",
     "title": "IMG 6975",
     "type": "Thumbnails",
@@ -813,16 +753,6 @@ export const assetItems: MediaAsset[] = [
     "src": "/Assets/Thumbnails/IMG_6975.JPG",
     "isVideo": false,
     "size": "normal"
-  },
-  {
-    "id": "thumbnails-51",
-    "title": "IMG 6976",
-    "type": "Thumbnails",
-    "folder": "Thumbnails",
-    "file": "IMG_6976(1).JPG",
-    "src": "/Assets/Thumbnails/IMG_6976(1).JPG",
-    "isVideo": false,
-    "size": "wide"
   },
   {
     "id": "thumbnails-52",
@@ -853,26 +783,6 @@ export const assetItems: MediaAsset[] = [
     "src": "/Assets/Thumbnails/IMG_6978(1).JPG",
     "isVideo": false,
     "size": "normal"
-  },
-  {
-    "id": "thumbnails-55",
-    "title": "IMG 6978",
-    "type": "Thumbnails",
-    "folder": "Thumbnails",
-    "file": "IMG_6978.JPG",
-    "src": "/Assets/Thumbnails/IMG_6978.JPG",
-    "isVideo": false,
-    "size": "normal"
-  },
-  {
-    "id": "thumbnails-56",
-    "title": "IMG 6979",
-    "type": "Thumbnails",
-    "folder": "Thumbnails",
-    "file": "IMG_6979(1).JPG",
-    "src": "/Assets/Thumbnails/IMG_6979(1).JPG",
-    "isVideo": false,
-    "size": "wide"
   },
   {
     "id": "thumbnails-57",
